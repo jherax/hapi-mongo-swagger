@@ -1,0 +1,68 @@
+{
+  "files.autoSave": "off",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": false
+  },
+  "eslint.codeAction.showDocumentation": {
+    "enable": false
+  },
+  "eslint.options": {
+    "extensions": [".js", ".ts", ".jsx", ".tsx", ".json"]
+  },
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "javascriptreact",
+    "typescriptreact"
+  ],
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "editor.trimAutoWhitespace": true,
+  "editor.renderWhitespace": "boundary",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.implementationsCodeLens.enabled": true,
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "html.completion.attributeDefaultValue": "doublequotes",
+  "html.format.preserveNewLines": true,
+  "html.format.maxPreserveNewLines": 2,
+  "files.associations": {
+    ".prettierrc": "json",
+    ".stylelintrc": "json"
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/.cache": true,
+    "**/node_modules/": true
+  },
+  "files.watcherExclude": {
+    "**/*.snap": true,
+    "**/.git/objects/**": true,
+    "**/node_modules/**": true,
+    "**/package-lock.json": true,
+    "/.cache/": true,
+    "/public": true,
+    "/build": true,
+    "/dist": true,
+    "/docs": true
+  },
+  "search.exclude": {
+    "**/*.snap": true,
+    "**/node_modules/**": true,
+    "**/package-lock.json": true,
+    "/.cache/": true,
+    "/public": true,
+    "/build": true,
+    "/dist": true,
+    "/docs": true
+  }
+}
