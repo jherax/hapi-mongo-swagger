@@ -4,6 +4,22 @@
 [Swagger](https://swagger.io/) documentation powered by
 [MongoDB](https://www.mongodb.com/)
 
+Instead of going with Express, we are going with Hapi. In a nutshell, Hapi is a
+Node framework. The reason why I chose Hapi is rather simple — simplicity and
+flexibility over the boilerplate code.
+
+Hapi enables us to build our API in a very rapid manner.
+
+## Environment
+
+Make sure to set the env variables. For local environment you can create a
+`.env` file with the following environment variables:
+
+```bash
+APP_HOST=localhost
+APP_PORT=4000
+```
+
 ## Running the server
 
 Just run the command
