@@ -20,5 +20,5 @@
     "typeRoots": ["./types", "node_modules/@types"]
   },
   "include": ["backend/", "types/"],
-  "exclude": ["node_modules", "coverage", "reports"]
+  "exclude": ["node_modules", "dist", "coverage", "reports"]
 }
