@@ -1,0 +1,57 @@
+version: '3.3'
+
+# @see https://geshan.com.np/blog/2023/03/mongodb-docker-compose/
+# @see https://www.osradar.com/deploy-mongodb-using-docker-compose/
+
+services:
+  mongodb:
+    image: mongo:6.0.8-rc0
+    container_name: mongodb_6
+    hostname: mongodb
+    volumes:
+      - ./.volumes/mongod.conf:/etc/mongod.conf
+      - ./.volumes/initdb.d/:/docker-entrypoint-initdb.d/
+      - ./.volumes/data/db/:/data/db/
+      - ./.volumes/data/log/:/var/log/mongodb/
+    networks:
+      - mongo-compose-network
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MONGO_INITDB_USERNAME: ${DB_INIT_USERNAME}
+      MONGO_INITDB_PASSWORD: ${DB_INIT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DB_NAME}
+    ports:
+      # <Port exposed>:<mongodb port running in the container>
+      - '${DB_PORT}:27017'
+    command: ['-f', '/etc/mongod.conf']
+
+  mongo-express:
+    container_name: mongo-express
+    hostname: mongoexpress
+    image: mongo-express
+    restart: always
+    depends_on:
+      - mongodb
+    networks:
+      - mongo-compose-network
+    env_file:
+      - .env
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb_6
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${DB_ROOT_USERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${DB_ROOT_PASSWORD}
+      - ME_CONFIG_BASICAUTH_USERNAME=${DB_INIT_USERNAME}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${DB_INIT_PASSWORD}
+    ports:
+      - '${ME_PORT}:8081'
+    volumes:
+      - ./.volumes/data/db/:/data/db/
+
+networks:
+  mongo-compose-network:
+    driver: bridge

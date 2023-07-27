@@ -46,8 +46,6 @@ logs
 
 # docker
 docker/**/.volumes/data
-!docker/**/.volumes/initdb.d/create-app-user.sh
-!docker/**/.volumes/mongod.conf
 
 # vercel
 .vercel

@@ -6,6 +6,7 @@
   "scripts": {
     "prepare": "husky install",
     "release": "standard-version",
+    "mongod": "node scripts/start-mongod.js",
     "dev-server": "concurrently -k \"tsc -w\" \"nodemon dist/index.js\"",
     "lint": "eslint . --ext .ts",
     "test": "jest --detectOpenHandles",
