@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@hapi/hapi": "^21.3.2",
+    "mongoose": "^7.4.1",
     "typescript": "^5.1.5"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
-import {init, start} from './server';
+import {init, prepareDb} from './server';
 
 /**
  * @see https://hapi.dev/tutorials/testing
  */
-init().then(start);
+init().then(prepareDb);

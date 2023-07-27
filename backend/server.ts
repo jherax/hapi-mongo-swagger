@@ -1,14 +1,22 @@
 import {Server} from '@hapi/hapi';
 
 import config from './config/server.cfg';
+import connectDb from './db/mongodb';
 import registerRoutes from './routes';
 
 const {host, port} = config.app;
-const server = new Server({host, port});
+let server: Server;
 
 export const init = async () => {
+  server = new Server({host, port});
   registerRoutes(server);
   await server.initialize();
+  return server;
+};
+
+export const prepareDb = async () => {
+  server.listener.on('ready', start);
+  connectDb(server);
   return server;
 };
 
