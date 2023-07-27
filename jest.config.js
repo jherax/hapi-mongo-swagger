@@ -6,7 +6,7 @@ const config = {
   silent: true,
   verbose: false,
   transform: {
-    '^.+\\.tsx?$': 'ts-jest', // @swc/jest, esbuild-jest
+    '^.+\\.tsx?$': '@swc/jest', // ts-jest, esbuild-jest
     // https://miyauchi.dev/posts/speeding-up-jest/
   },
   roots: ['<rootDir>/backend'],
