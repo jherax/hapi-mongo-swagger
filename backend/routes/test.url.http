@@ -1,0 +1,14 @@
+POST http://localhost:4000/api/v1/paintings?t={{$timestamp}}
+Content-Type: application/json
+User-Agent: Aldous-Huxley-v1.0
+
+{
+  "name": "Oil Painting Techniques And Styles",
+  "url": "https://artignition.com/oil-painting-techniques/",
+  "techniques": ["Glazing", "Wet-on-Wet", "Blending", "Scumbling"]
+}
+
+# ---
+
+GET http://localhost:4000/api/v1/paintings?t={{$timestamp}}
+Content-Type: application/json

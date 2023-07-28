@@ -1,3 +1,5 @@
+import {IPainting} from './Painting';
+
 declare global {
   export type JSONValue =
     | string
@@ -12,6 +14,8 @@ declare global {
   }
 
   export type JSONArray = Array<JSONValue>;
+
+  export {IPainting};
 }
 
 // THIS IS NECESSARY
