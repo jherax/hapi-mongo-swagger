@@ -15,6 +15,17 @@ declare global {
 
   export type JSONArray = Array<JSONValue>;
 
+  export interface ServerResponse<T = JSONObject> {
+    code: number;
+    message: string;
+    success: boolean;
+    data?: T;
+    error?: {
+      message: string;
+      stack: string;
+    };
+  }
+
   export {IPainting};
 }
 
