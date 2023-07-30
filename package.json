@@ -7,7 +7,9 @@
     "prepare": "husky install",
     "release": "standard-version",
     "mongod": "node scripts/start-mongod.js",
-    "dev-server": "concurrently -k \"tsc -w\" \"nodemon dist/index.js\"",
+    "build": "tsc -p tsconfig.build.json",
+    "ts-config": "npm run build -- --showConfig",
+    "dev-server": "concurrently -k \"npm:build -- -w\" \"nodemon dist/index.js\"",
     "lint": "eslint . --ext .ts",
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --silent=false --verbose --watch"

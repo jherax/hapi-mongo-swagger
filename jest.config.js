@@ -9,7 +9,7 @@ const config = {
     '^.+\\.tsx?$': '@swc/jest', // ts-jest, esbuild-jest
     // https://miyauchi.dev/posts/speeding-up-jest/
   },
-  roots: ['<rootDir>/backend'],
+  roots: ['<rootDir>/backend', '<rootDir>/scripts'],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   // setupFiles: ['./jest/jest.env.js'],
