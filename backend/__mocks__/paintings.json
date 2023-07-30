@@ -1,0 +1,20 @@
+[
+  {
+    "_id": "64c4279c0d801e7604113a10",
+    "name": "Oil Painting Techniques And Styles: 1",
+    "url": "https://artignition.com/oil-painting-techniques/",
+    "techniques": ["Glazing", "Wet-on-Wet", "Blending", "Scumbling"],
+    "createdAt": "2023-07-28T20:39:56.591Z",
+    "updatedAt": "2023-07-28T20:39:56.591Z",
+    "__v": 0
+  },
+  {
+    "_id": "64c435d821874ed2e9a0ac98",
+    "name": "Oil Painting Techniques And Styles: 2",
+    "url": "https://artignition.com/oil-painting-techniques/",
+    "techniques": ["Impasto", "Dry Brushing", "Underpainting", "Imprimatura"],
+    "createdAt": "2023-07-28T21:40:40.847Z",
+    "updatedAt": "2023-07-28T21:40:40.847Z",
+    "__v": 0
+  }
+]

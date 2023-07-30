@@ -12,3 +12,8 @@ User-Agent: Aldous-Huxley-v1.0
 
 GET http://localhost:4000/api/v1/paintings?t={{$timestamp}}
 Content-Type: application/json
+
+# ---
+
+GET http://localhost:4000/healthcheck
+Content-Type: application/json
