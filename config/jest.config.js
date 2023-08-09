@@ -1,7 +1,8 @@
 const config = {
+  rootDir: '../',
   cache: true,
-  cacheDirectory: './.cache',
-  // testEnvironment: 'node',
+  cacheDirectory: '<rootDir>/.cache',
+  testEnvironment: 'node',
   // Prevent tests from printing messages through the console
   silent: true,
   verbose: false,
@@ -12,8 +13,8 @@ const config = {
   roots: ['<rootDir>/backend', '<rootDir>/scripts'],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  // setupFiles: ['./jest/jest.env.js'],
-  // setupFilesAfterEnv: ['./jest/jest.setup.js'],
+  // setupFiles: ['<rootDir>/config/jest.env.js'],
+  setupFilesAfterEnv: ['<rootDir>/config/jest.setup.js'],
   // All imported modules in your tests should be mocked automatically
   // automock: false,
   // Automatically clear mock calls and instances between every test

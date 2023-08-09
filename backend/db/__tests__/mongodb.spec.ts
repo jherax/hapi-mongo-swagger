@@ -7,22 +7,6 @@ import logger from '../../utils/logger';
 import connectDb from '../mongodb';
 
 jest.mock('../../utils/logger');
-jest.mock('../../config/server.cfg', () => {
-  return {
-    app: {
-      host: 'localhost',
-      port: 8888,
-      logLevel: 'info',
-    },
-    db: {
-      host: 'localhost',
-      port: 9999,
-      database: 'test-db',
-      username: 'contoso',
-      password: 'costoso',
-    },
-  };
-});
 
 const {host, port, database, username, password} = config.db;
 

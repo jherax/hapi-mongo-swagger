@@ -9,7 +9,7 @@
       "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
       "args": [],
       "program": "backend/index.ts",
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceRoot}",
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": ["<node_internals>/**", "node_modules/**"],
       "env": {
@@ -22,9 +22,8 @@
       "request": "launch",
       "runtimeExecutable": "node",
       "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
-      "args": [],
-      "program": "${workspaceFolder}/${relativeFile}",
-      "cwd": "${workspaceFolder}",
+      "args": ["${workspaceFolder}/${relativeFile}"],
+      "cwd": "${workspaceRoot}",
       "internalConsoleOptions": "openOnSessionStart",
       "skipFiles": ["<node_internals>/**", "node_modules/**"],
       "env": {
@@ -52,7 +51,7 @@
         "--forceExit",
         "--verbose",
         "--runInBand",
-        "--config=jest.config.js",
+        "--config=${workspaceFolder}/config/jest.config.js",
         "${fileBasenameNoExtension}"
       ],
       "env": {"NODE_ENV": "test"},

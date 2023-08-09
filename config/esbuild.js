@@ -1,6 +1,6 @@
 const {build} = require('esbuild');
 const {Generator} = require('npm-dts');
-const {dependencies, devDependencies} = require('./package.json');
+const {dependencies, devDependencies} = require('../package.json');
 
 new Generator({
   entry: 'backend/index.ts',
@@ -21,7 +21,7 @@ const sharedConfig = {
   bundle: true,
   minify: true,
   sourcemap: true,
-  tsconfig: 'tsconfig.build.json',
+  tsconfig: 'config/tsconfig.build.json',
   drop: ['debugger'],
   // TODO: mock chalk
 };
