@@ -18,6 +18,7 @@
     "javascriptreact",
     "typescriptreact"
   ],
+  "editor.codeLens": true,
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
   "editor.trimAutoWhitespace": true,

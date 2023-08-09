@@ -6,8 +6,6 @@ import {init} from '../../server';
 import logger from '../../utils/logger';
 import connectDb from '../mongodb';
 
-jest.mock('../../utils/logger');
-
 const {host, port, database, username, password} = config.db;
 
 const expectedArgs = {

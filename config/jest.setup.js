@@ -36,3 +36,17 @@ jest.mock('../backend/config/server.cfg', () => {
     },
   };
 });
+
+jest.mock('../backend/utils/logger', function () {
+  const originalModule = jest.requireActual('../backend/utils/logger');
+  // this env var is set in VS Code launch file, for debugging
+  if (process.env.SHOW_LOGGER) {
+    return originalModule;
+  }
+  return {
+    error: jest.fn(),
+    warn: jest.fn(),
+    info: jest.fn(),
+    debug: jest.fn(),
+  };
+});

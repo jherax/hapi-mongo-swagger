@@ -54,7 +54,7 @@
         "--config=${workspaceFolder}/config/jest.config.js",
         "${fileBasenameNoExtension}"
       ],
-      "env": {"NODE_ENV": "test"},
+      "env": {"NODE_ENV": "test", "SHOW_LOGGER": "1"},
       "console": "integratedTerminal",
       "windows": {
         "program": "${workspaceFolder}/node_modules/jest/bin/jest"
