@@ -3,13 +3,16 @@ import mongoose, {type Mongoose} from 'mongoose';
 
 import config from '../../config/server.cfg';
 import {init} from '../../server';
+import logger from '../../utils/logger';
 import connectDb from '../mongodb';
 
+jest.mock('../../utils/logger');
 jest.mock('../../config/server.cfg', () => {
   return {
     app: {
       host: 'localhost',
       port: 8888,
+      logLevel: 'info',
     },
     db: {
       host: 'localhost',
@@ -25,7 +28,7 @@ const {host, port, database, username, password} = config.db;
 
 const expectedArgs = {
   connectSuccess: '🍃 MongoDB is connected',
-  connectFail: '🍃 MongoDB connection failed, retry in 2 secs.\n',
+  connectFail: '🍃 MongoDB connection failed, retry in 2 secs.',
   connectUrl: `mongodb://${username}:${password}@${host}:${port}/${database}`,
   connectOptions: {
     useNewUrlParser: true,
@@ -34,7 +37,8 @@ const expectedArgs = {
 };
 
 describe('Connect database with retry', () => {
-  const consoleInfoSpy = jest.spyOn(console, 'info');
+  const logError = jest.spyOn(logger, 'error');
+  const logInfo = jest.spyOn(logger, 'info');
   let server: Server;
 
   beforeAll(async () => {
@@ -44,7 +48,7 @@ describe('Connect database with retry', () => {
   });
 
   beforeEach(() => {
-    consoleInfoSpy.mockClear();
+    logInfo.mockClear();
   });
 
   afterAll(async () => {
@@ -60,20 +64,22 @@ describe('Connect database with retry', () => {
     await connectDb(server);
     const {connectUrl, connectOptions, connectSuccess} = expectedArgs;
     expect(mongooseConnectSpy).toBeCalledWith(connectUrl, connectOptions);
-    expect(consoleInfoSpy).toBeCalledWith(connectSuccess);
+    expect(logInfo).toBeCalledWith(connectSuccess);
     mongooseConnectSpy.mockRestore();
   });
 
   it('should fail to connect to MongoDB', async () => {
+    const errorMsg = 'Reject connection to MongoDB';
     const mongooseConnectSpy = jest
       .spyOn<Mongoose, 'connect'>(mongoose, 'connect')
-      .mockReturnValueOnce(Promise.reject(Error('Connect error')));
+      .mockReturnValueOnce(Promise.reject(Error(errorMsg)));
     try {
       await connectDb(server);
     } catch (error) {
       const {connectUrl, connectOptions, connectFail} = expectedArgs;
       expect(mongooseConnectSpy).toBeCalledWith(connectUrl, connectOptions);
-      expect(consoleInfoSpy).toBeCalledWith(connectFail);
+      expect(logInfo).toBeCalledWith(connectFail);
+      expect(logError).toHaveBeenCalled();
       expect(setTimeout).toHaveBeenCalled();
       mongooseConnectSpy.mockRestore();
     }

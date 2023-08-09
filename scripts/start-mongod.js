@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const execPromise = require('./exec-promise');
 
 const commands = [

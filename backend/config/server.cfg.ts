@@ -6,6 +6,7 @@ const config = {
   app: {
     host: process.env.APP_HOST,
     port: process.env.APP_PORT,
+    logLevel: process.env.LOG_LEVEL || 'info',
   },
   db: {
     host: process.env.DB_HOST,

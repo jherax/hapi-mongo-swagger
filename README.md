@@ -20,6 +20,34 @@ APP_HOST=localhost
 APP_PORT=4000
 ```
 
+Also you may change the log level by setting the env variable `LOG_LEVEL` to the
+available values `error | warn | info | debug`. By default `LOG_LEVEL` is set to
+`info`.
+
+This application uses [winston](https://github.com/winstonjs/winston) as logging
+library with support for multiple transports. A transport is essentially a
+storage device for your logs. Default transports are `Console` and
+`DailyRotateFile`
+
+ESLint disables the use of `console.*` methods, use the following methods
+instead:
+
+```js
+logger.error('Message to the logger');
+logger.warn('Message to the logger');
+logger.info('Message to the logger');
+logger.debug('Message to the logger');
+```
+
+## Prepare the app
+
+After cloning the repository, run the following commands:
+
+```bash
+npm install
+npm run prepare
+```
+
 ## Running the server
 
 Just run the command
@@ -28,56 +56,8 @@ Just run the command
 npm run dev-server
 ```
 
-## Husky
-
-```bash
-npm install husky -D
-```
-
-Edit `package.json` > `prepare` script, and add as follow:
-
-```json
-"prepare": "husky install"
-```
-
-Then, run the command:
-
-```bash
-npm run prepare
-```
-
-To add a hook:
-
-```bash
-npx husky add .husky/pre-commit "eslint and prettier commands"
-npx husky add .husky/post-commit "git update-index -g"
-npx husky add .husky/commit-msg 'npx --no -- commitlint --edit ${1}'
-git add .husky/
-git commit -m "chore: Added git hooks with husky"
-```
-
-See:
-[conventional-changelog/commitlint](https://github.com/conventional-changelog/commitlint).
-
-## Standard-version
-
-`standard-version` needs to have a starting point to append the CHANGELOG and
-other versions to. Simply run:
-
-```bash
-npm run release -- --first-release
-```
-
-### Usage
-
-For a new release, just run
-
-```bash
-npm run release
-```
-
-For more details, please visit the Github site
-[standard-version](https://github.com/conventional-changelog/standard-version)
+⚠️ Running the local server requires docker, if docker has not been configured,
+then follow next steps 👇
 
 ## docker
 
@@ -128,3 +108,71 @@ following command for the specific container:
 docker exec -it mongodb_6 bash
 root@mongodb:/#
 ```
+
+## Standard-version
+
+`standard-version` is a utility for versioning using semver and CHANGELOG
+generation powered by Conventional Commits.
+
+> `standard-version` is deprecated. If you're a GitHub user, I recommend
+> [`release-please`](https://github.com/googleapis/release-please) as an
+> alternative.
+
+`standard-version` needs to have a starting point to append the CHANGELOG and
+other versions to. Simply run:
+
+```bash
+npm run release -- --first-release
+```
+
+### Usage
+
+For a new release, just run
+
+```bash
+npm run release
+```
+
+For more details, please visit the Github site
+[standard-version](https://github.com/conventional-changelog/standard-version)
+
+## Husky
+
+Husky supports all [Git hooks](https://git-scm.com/docs/githooks). You can use
+it to lint your commit messages, run tests, lint code, etc... when you commit or
+push.
+
+See more in the Github site: [husky](https://github.com/typicode/husky)
+
+### Configure
+
+To set up `husky` in a new project, follow these steps:
+
+```bash
+npm install husky -D
+```
+
+Edit `package.json` > `prepare` script, and add as follow:
+
+```json
+"prepare": "husky install"
+```
+
+Then, run the command:
+
+```bash
+npm run prepare
+```
+
+To add a hook:
+
+```bash
+npx husky add .husky/pre-commit "eslint and prettier commands"
+npx husky add .husky/post-commit "git update-index -g"
+npx husky add .husky/commit-msg 'npx --no -- commitlint --edit ${1}'
+git add .husky/
+git commit -m "chore: Added git hooks with husky"
+```
+
+See:
+[conventional-changelog/commitlint](https://github.com/conventional-changelog/commitlint).

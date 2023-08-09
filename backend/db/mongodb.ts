@@ -2,6 +2,7 @@ import type {Server} from '@hapi/hapi';
 import mongoose from 'mongoose';
 
 import config from '../config/server.cfg';
+import logger from '../utils/logger';
 
 /**
  * @see https://github.com/docker/awesome-compose/blob/master/react-express-mongodb/backend/db/index.js
@@ -28,15 +29,16 @@ async function connectDb(app: Server) {
       .connect(uri, options)
       .then(() => {
         clearTimeout(timerId);
-        console.info('🍃 MongoDB is connected');
+        logger.info('🍃 MongoDB is connected');
         app.listener.emit('ready');
       })
       .catch(err => {
         if (intents === MAX_TRIES) {
-          console.error(err);
+          logger.error(err);
           process.exit(0);
         }
-        console.info('🍃 MongoDB connection failed, retry in 2 secs.\n', err);
+        logger.info('🍃 MongoDB connection failed, retry in 2 secs.');
+        logger.error(err);
         timerId = setTimeout(connectWithRetry, 2000);
         intents += 1;
       });

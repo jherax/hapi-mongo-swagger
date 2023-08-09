@@ -26,9 +26,11 @@ module.exports = {
   globals: {},
   rules: {
     curly: 'error',
-    'no-console': ['error', {allow: ['warn', 'error', 'info']}],
+    'no-console': 'error',
+    // 'no-console': ['error', {allow: ['warn', 'error', 'info']}],
     'spaced-comment': ['warn', 'always'],
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-unused-vars': [1, {args: 'none'}],
     '@typescript-eslint/no-var-requires': 'off',
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',

@@ -3,6 +3,7 @@ import {Server} from '@hapi/hapi';
 import config from './config/server.cfg';
 import connectDb from './db/mongodb';
 import registerRoutes from './routes';
+import logger from './utils/logger';
 
 const {host, port} = config.app;
 let server: Server;
@@ -22,12 +23,12 @@ export const prepareDb = async () => {
 
 export const start = async () => {
   await server.start();
-  console.info(`🤖 Hapi server running at http://${host}:${port}`);
+  logger.info(`🤖 Hapi server running at http://${host}:${port}`);
   return server;
 };
 
 process.on('unhandledRejection', err => {
-  console.error(err);
+  logger.error(err);
   process.exit(1);
 });
 

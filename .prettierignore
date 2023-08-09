@@ -29,8 +29,9 @@ package-lock.json
 .DS_Store
 *.pem
 
-# debug
+# logs
 *.log*
+/logs
 
 # env files
 .env

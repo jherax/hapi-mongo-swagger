@@ -23,6 +23,7 @@ const sharedConfig = {
   sourcemap: true,
   tsconfig: 'tsconfig.build.json',
   drop: ['debugger'],
+  // TODO: mock chalk
 };
 
 build({
