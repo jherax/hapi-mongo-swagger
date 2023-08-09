@@ -23,7 +23,9 @@ const sharedConfig = {
   sourcemap: true,
   tsconfig: 'config/tsconfig.build.json',
   drop: ['debugger'],
-  // TODO: mock chalk
+  alias: {
+    chalk: 'backend/config/chalk.prd',
+  },
 };
 
 build({
