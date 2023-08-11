@@ -14,6 +14,7 @@ const expectedArgs = {
   connectUrl: `mongodb://${username}:${password}@${host}:${port}/${database}`,
   connectOptions: {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
     autoIndex: false,
   },
 };
@@ -38,6 +39,7 @@ describe('Connect database with retry', () => {
     await server.stop();
   });
 
+  // Tests that the function successfully connects to MongoDB
   it('should connect to MongoDB', async () => {
     const mongooseConnectSpy = jest
       .spyOn<Mongoose, 'connect'>(mongoose, 'connect')
@@ -50,6 +52,20 @@ describe('Connect database with retry', () => {
     mongooseConnectSpy.mockRestore();
   });
 
+  // Tests that the function emits a 'ready' event on successful connection
+  it('should emit a "ready" event on successful connection', async () => {
+    const mongooseConnectSpy = jest
+      .spyOn<Mongoose, 'connect'>(mongoose, 'connect')
+      .mockReturnValue(Promise.resolve(mongoose));
+
+    const serverEmitSpy = jest.spyOn(server.listener, 'emit');
+
+    await connectDb(server);
+    expect(serverEmitSpy).toHaveBeenCalledWith('ready');
+    mongooseConnectSpy.mockRestore();
+  });
+
+  // Tests that the function fails to connect to MongoDB
   it('should fail to connect to MongoDB', async () => {
     const errorMsg = 'Reject connection to MongoDB';
     const mongooseConnectSpy = jest

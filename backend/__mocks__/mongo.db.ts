@@ -10,15 +10,19 @@ let mongo: MongoMemoryServer = undefined;
 export const setUp = async () => {
   const options = {
     useNewUrlParser: true,
+    useUnifiedTopology: true, // Use new server discovery and monitoring engine
     autoIndex: false, // Don't build indexes
   };
-  mongo = await MongoMemoryServer.create();
-  const url = mongo.getUri();
-  await mongoose.connect(url, options);
+  if (!mongo) {
+    mongo = await MongoMemoryServer.create();
+    const url = mongo.getUri();
+    await mongoose.connect(url, options);
+  }
+  return mongo;
 };
 
 export const dropDatabase = async () => {
-  if (mongo) {
+  if (mongo && mongoose.connection.readyState === 1) {
     await mongoose.connection.dropDatabase();
     await mongoose.connection.close();
     await mongo.stop();

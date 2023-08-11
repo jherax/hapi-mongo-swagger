@@ -15,11 +15,12 @@ const MAX_TRIES = 10;
 
 const options = {
   useNewUrlParser: true,
+  useUnifiedTopology: true, // Use new server discovery and monitoring engine
   autoIndex: false, // Don't build indexes
   // maxPoolSize: 10, // Maintain up to 10 socket connections
 };
 
-async function connectDb(app: Server) {
+async function connectDb(server: Server) {
   const {host, port, database, username, password} = config.db;
   const uri = `mongodb://${username}:${password}@${host}:${port}/${database}`;
   mongoose.Promise = global.Promise;
@@ -30,12 +31,12 @@ async function connectDb(app: Server) {
       .then(() => {
         clearTimeout(timerId);
         logger.info('🍃 MongoDB is connected');
-        app.listener.emit('ready');
+        server.listener.emit('ready');
       })
       .catch(err => {
         if (intents === MAX_TRIES) {
           logger.error(err);
-          process.exit(0);
+          throw new Error('Maximum number of connection retries reached');
         }
         logger.info('🍃 MongoDB connection failed, retry in 2 secs.');
         logger.error(err);
