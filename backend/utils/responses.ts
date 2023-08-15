@@ -10,13 +10,13 @@ export function sendSuccess<T = JSONObject>(
   data?: NonNullable<T>,
 ) {
   serverMsg.data = data || {};
-  return reply.response(serverMsg).code(serverMsg.code);
+  return reply.response(serverMsg).code(serverMsg.statusCode);
 }
 
 export function sendError(reply: ResponseToolkit, err: ServerError) {
   const errorCode = err.code ?? 500;
   const msgKey = Object.keys(messages).find(key => {
-    return messages[key].code === errorCode;
+    return messages[key].statusCode === errorCode;
   });
   const serverMsg: ServerResponse = messages[msgKey];
   serverMsg.error = {

@@ -36,5 +36,5 @@ describe('Server GET "/"', () => {
 });
 
 function getExpectedText() {
-  return `<h1>GraphQL API with Nodejs, Swagger and MongoDB</h1>`;
+  return `<h3>GraphQL API with Nodejs, Swagger and MongoDB</h3>`;
 }

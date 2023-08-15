@@ -9,7 +9,7 @@ export default function registerRoutes(server: Server) {
       method: 'GET',
       path: '/',
       handler: () => {
-        return `<h1>GraphQL API with Nodejs, Swagger and MongoDB</h1>`;
+        return `<h3>GraphQL API with Nodejs, Swagger and MongoDB</h3>`;
       },
     },
     ...healthRoutes(),

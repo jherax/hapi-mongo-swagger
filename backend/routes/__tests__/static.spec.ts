@@ -17,7 +17,7 @@ describe('Testing routes', () => {
   it('GET "/" responds with text', async () => {
     const reply = await request(server.listener).get('/');
     expect(reply.text).toEqual(
-      '<h1>GraphQL API with Nodejs, Swagger and MongoDB</h1>',
+      '<h3>GraphQL API with Nodejs, Swagger and MongoDB</h3>',
     );
     expect(reply.statusCode).toEqual(200);
   });

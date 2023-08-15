@@ -16,10 +16,13 @@ declare global {
 
   export type JSONArray = Array<JSONValue>;
 
-  export interface ServerResponse<T = JSONObject> {
-    code: number;
+  export type ServerMessage = {
+    statusCode: number;
     message: string;
     success: boolean;
+  };
+
+  export interface ServerResponse<T = JSONObject> extends ServerMessage {
     data?: T;
     error?: {
       message: string;
