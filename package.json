@@ -31,8 +31,10 @@
     "npm": ">=8"
   },
   "dependencies": {
+    "@hapi/boom": "^10.0.1",
     "@hapi/hapi": "^21.3.2",
     "chalk": "^4.1.2",
+    "hapi-rate-limit": "^6.0.0",
     "mongoose": "^7.4.1",
     "winston": "^3.10.0",
     "winston-daily-rotate-file": "^4.7.1"

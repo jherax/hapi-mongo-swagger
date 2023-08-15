@@ -1,6 +1,7 @@
 import {Server} from '@hapi/hapi';
 
 import config from './config/server.cfg';
+import registerPlugins from './config/server.plugins';
 import connectDb from './db/mongodb';
 import registerRoutes from './routes';
 import logger from './utils/logger';
@@ -10,6 +11,7 @@ let server: Server;
 
 export const init = async () => {
   server = new Server({host, port});
+  await registerPlugins(server);
   registerRoutes(server);
   await server.initialize();
   return server;

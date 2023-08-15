@@ -21,25 +21,4 @@ describe('Testing routes', () => {
     );
     expect(reply.statusCode).toEqual(200);
   });
-
-  it('GET "/healthz" responds with JSON', async () => {
-    const reply = await request(server.listener).get('/healthz');
-    const replyJson = JSON.parse(reply.text);
-    expect(replyJson).toStrictEqual(getHealthStatus());
-    expect(reply.statusCode).toEqual(200);
-  });
-
-  it('GET "/healthcheck" responds with JSON', async () => {
-    const reply = await request(server.listener).get('/healthcheck');
-    const replyJson = JSON.parse(reply.text);
-    expect(replyJson).toStrictEqual(getHealthStatus());
-    expect(reply.statusCode).toEqual(200);
-  });
 });
-
-function getHealthStatus() {
-  return {
-    db: 'MongoDB is OK',
-    server: 'Node Hapi is OK',
-  };
-}

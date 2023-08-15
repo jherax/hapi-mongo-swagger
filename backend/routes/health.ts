@@ -1,27 +1,40 @@
 import type {Request, ResponseToolkit} from '@hapi/hapi';
 
+import messages from '../utils/messages';
+import {sendSuccess} from '../utils/responses';
+
+const healthStatus = {
+  server: {isUp: true},
+  database: {isUp: true},
+};
+
+const pluginsOptions = {
+  'hapi-rate-limit': {
+    enabled: true,
+    userPathLimit: 3,
+  },
+};
+
+const healthCheckHandler = (request: Request, reply: ResponseToolkit) => {
+  return sendSuccess(reply, messages.SUCCESSFUL, healthStatus);
+};
+
 function healthRoutes() {
   return [
     {
       method: 'GET',
-      path: '/healthz',
-      handler: (request: Request, reply: ResponseToolkit) => {
-        const healthStatus = {
-          db: 'MongoDB is OK',
-          server: 'Node Hapi is OK',
-        };
-        return reply.response(healthStatus).code(200);
+      path: '/healthcheck',
+      options: {
+        handler: healthCheckHandler,
+        plugins: pluginsOptions,
       },
     },
     {
       method: 'GET',
-      path: '/healthcheck',
-      handler: (request: Request, reply: ResponseToolkit) => {
-        const healthStatus = {
-          db: 'MongoDB is OK',
-          server: 'Node Hapi is OK',
-        };
-        return reply.response(healthStatus).code(200);
+      path: '/healthz',
+      options: {
+        handler: healthCheckHandler,
+        plugins: pluginsOptions,
       },
     },
   ];

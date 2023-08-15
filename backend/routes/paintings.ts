@@ -11,13 +11,20 @@ function paintingRoutes() {
     {
       method: 'GET',
       path: `${v1}/paintings`,
-      handler: async (request: Request, reply: ResponseToolkit) => {
-        try {
-          const data = await Painting.find().lean().exec();
-          return sendSuccess<IPainting[]>(reply, messages.SUCCESSFUL, data);
-        } catch (error) {
-          return sendError(reply, error);
-        }
+      options: {
+        handler: async (request: Request, reply: ResponseToolkit) => {
+          try {
+            const data = await Painting.find().lean().exec();
+            return sendSuccess<IPainting[]>(reply, messages.SUCCESSFUL, data);
+          } catch (error) {
+            return sendError(reply, error);
+          }
+        },
+        plugins: {
+          'hapi-rate-limit': {
+            enabled: true,
+          },
+        },
       },
     },
     {
