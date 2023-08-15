@@ -1,12 +1,8 @@
 import type {Request, ResponseToolkit} from '@hapi/hapi';
 
+import HealthCheck from '../models/HealthCheck';
 import messages from '../utils/messages';
-import {sendSuccess} from '../utils/responses';
-
-const healthStatus = {
-  server: {isUp: true},
-  database: {isUp: true},
-};
+import {sendError, sendSuccess} from '../utils/responses';
 
 const pluginsOptions = {
   'hapi-rate-limit': {
@@ -15,8 +11,30 @@ const pluginsOptions = {
   },
 };
 
-const healthCheckHandler = (request: Request, reply: ResponseToolkit) => {
-  return sendSuccess(reply, messages.SUCCESSFUL, healthStatus);
+const healthCheckHandler = async (request: Request, reply: ResponseToolkit) => {
+  const healthStatus = {
+    server: {isUp: true},
+    database: {isUp: false},
+  };
+  const findEvent = {event: 'check'};
+  const updateOptions = {
+    new: true,
+    upsert: true,
+  };
+
+  try {
+    const data: IHealthCheck = await Promise.resolve(
+      HealthCheck.findOneAndUpdate(findEvent, findEvent, updateOptions),
+    );
+    if (data) {
+      healthStatus.database.isUp = true;
+      return sendSuccess(reply, messages.SUCCESSFUL, healthStatus);
+    } else {
+      return sendSuccess(reply, messages.SERVICE_UNAVAILABLE, healthStatus);
+    }
+  } catch (error) {
+    return sendError(reply, error);
+  }
 };
 
 function healthRoutes() {
