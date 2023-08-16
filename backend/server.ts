@@ -1,4 +1,5 @@
 import {Server} from '@hapi/hapi';
+import Qs from 'qs';
 
 import config from './config/server.cfg';
 import registerPlugins from './config/server.plugins';
@@ -10,7 +11,29 @@ const {host, port} = config.app;
 let server: Server;
 
 export const init = async () => {
-  server = new Server({host, port});
+  /**
+   * @see https://akhromieiev.com/tutorials/using-cors-in-hapi/
+   */
+  const corsOptions = {
+    origin: ['*'], // an array of origins or 'ignore' ('Access-Control-Allow-Origin')
+    headers: ['Authorization'], // an array of strings ('Access-Control-Allow-Headers')
+    exposedHeaders: ['Accept'], // an array of exposed headers ('Access-Control-Expose-Headers')
+    maxAge: 60, // number of seconds. ('Access-Control-Max-Age')
+    credentials: true, // boolean, allow user credentials. ('Access-Control-Allow-Credentials')
+  };
+
+  /**
+   * How to run multiple servers:
+   * @see https://futurestud.io/tutorials/hapi-how-to-run-separate-frontend-and-backend-servers-within-one-project
+   */
+  server = new Server({
+    host,
+    port,
+    routes: {cors: corsOptions},
+    router: {stripTrailingSlash: true},
+    query: {parser: query => Qs.parse(query)},
+  });
+
   await registerPlugins(server);
   registerRoutes(server);
   await server.initialize();
@@ -25,7 +48,7 @@ export const prepareDb = async () => {
 
 export const start = async () => {
   await server.start();
-  logger.info(`🤖 Hapi server running at http://${host}:${port}`);
+  logger.info(`🤖 Hapi server running at ${server.info.uri}`);
   return server;
 };
 

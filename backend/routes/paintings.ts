@@ -24,6 +24,14 @@ function paintingRoutes(): ServerRoute<ReqRefDefaults>[] {
       },
     },
     {
+      method: 'GET',
+      path: `${v1}/paintings/{page}`,
+      options: {
+        handler: getAllPaintingsHandler,
+        plugins: pluginsOptions,
+      },
+    },
+    {
       method: 'POST',
       path: `${v1}/paintings`,
       handler: savePaintingHandler,

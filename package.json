@@ -36,6 +36,7 @@
     "chalk": "^4.1.2",
     "hapi-rate-limit": "^6.0.0",
     "mongoose": "^7.4.1",
+    "qs": "^6.11.2",
     "winston": "^3.10.0",
     "winston-daily-rotate-file": "^4.7.1"
   },
