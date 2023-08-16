@@ -1,49 +1,32 @@
-import type {Request, ResponseToolkit} from '@hapi/hapi';
+import type {ReqRefDefaults, ServerRoute} from '@hapi/hapi';
 
-import Painting from '../models/Painting';
-import messages from '../utils/messages';
-import {sendError, sendSuccess} from '../utils/responses';
+import {
+  getAllPaintingsHandler,
+  savePaintingHandler,
+} from '../handlers/paintingHandler';
 
 const v1 = '/api/v1';
 
-function paintingRoutes() {
+const pluginsOptions = {
+  'hapi-rate-limit': {
+    enabled: true,
+  },
+};
+
+function paintingRoutes(): ServerRoute<ReqRefDefaults>[] {
   return [
     {
       method: 'GET',
       path: `${v1}/paintings`,
       options: {
-        handler: async (request: Request, reply: ResponseToolkit) => {
-          try {
-            const data = await Painting.find().lean().exec();
-            return sendSuccess<IPainting[]>(reply, messages.SUCCESSFUL, data);
-          } catch (error) {
-            return sendError(reply, error);
-          }
-        },
-        plugins: {
-          'hapi-rate-limit': {
-            enabled: true,
-          },
-        },
+        handler: getAllPaintingsHandler,
+        plugins: pluginsOptions,
       },
     },
     {
       method: 'POST',
       path: `${v1}/paintings`,
-      handler: async (request: Request, reply: ResponseToolkit) => {
-        try {
-          const {name, url, techniques} = request.payload as JSONObject;
-          const painting = new Painting({
-            name,
-            url,
-            techniques,
-          });
-          const data = await painting.save();
-          return sendSuccess<IPainting>(reply, messages.SUCCESSFUL_ADDED, data);
-        } catch (error) {
-          return sendError(reply, error);
-        }
-      },
+      handler: savePaintingHandler,
     },
   ];
 }
