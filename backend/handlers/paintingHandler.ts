@@ -1,4 +1,4 @@
-import type {Request, ResponseToolkit} from '@hapi/hapi';
+import type {Request, ResponseObject, ResponseToolkit} from '@hapi/hapi';
 
 import Painting from '../models/Painting';
 import messages from '../utils/messages';
@@ -29,6 +29,10 @@ export const savePaintingHandler = async (
 ) => {
   try {
     const {name, url, techniques} = request.payload as IPainting;
+    const validated = request.preResponses.validated as ResponseObject;
+    if (validated.statusCode !== 200) {
+      return validated;
+    }
     const painting = new Painting({
       name,
       url,

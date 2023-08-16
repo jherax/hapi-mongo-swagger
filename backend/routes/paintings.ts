@@ -4,6 +4,7 @@ import {
   getAllPaintingsHandler,
   savePaintingHandler,
 } from '../handlers/paintingHandler';
+import paintingValidator from '../handlers/paintingValidator';
 
 const v1 = '/api/v1';
 
@@ -12,6 +13,11 @@ const pluginsOptions = {
     enabled: true,
   },
 };
+
+/**
+ * Handle cookies via `server.state()`
+ * @see https://hapi.dev/tutorials/cookies/
+ */
 
 function paintingRoutes(): ServerRoute<ReqRefDefaults>[] {
   return [
@@ -34,7 +40,10 @@ function paintingRoutes(): ServerRoute<ReqRefDefaults>[] {
     {
       method: 'POST',
       path: `${v1}/paintings`,
-      handler: savePaintingHandler,
+      options: {
+        pre: [{assign: 'validated', method: paintingValidator}],
+        handler: savePaintingHandler,
+      },
     },
   ];
 }
