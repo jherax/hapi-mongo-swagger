@@ -9,5 +9,9 @@
     "../**/__tests__",
     "../**/*.test.*",
     "../**/*.spec.ts"
-  ]
+  ],
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true
+  }
 }

@@ -1,5 +1,3 @@
-declare global {
-  export interface IHealthCheck {
-    event: string;
-  }
+declare interface IHealthCheck {
+  event: string;
 }

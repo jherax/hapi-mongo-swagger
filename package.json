@@ -4,7 +4,7 @@
   "description": "GraphQL API based on Nodejs with Swagger documentation powered by MongoDB",
   "main": "dist/index.js",
   "module": "dist/index.esm.mjs",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/*"
   ],
@@ -24,7 +24,7 @@
     "test:watch": "jest -c=config/jest.config.js --silent=false --verbose --watch"
   },
   "keywords": [],
-  "author": "",
+  "author": "David Rivera <jherax@gmail.com>",
   "license": "ISC",
   "engines": {
     "node": ">=16",

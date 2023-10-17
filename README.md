@@ -53,6 +53,7 @@ npm run prepare
 Just run the command
 
 ```bash
+npm run mongod
 npm run dev-server
 ```
 
