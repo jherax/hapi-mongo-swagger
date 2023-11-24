@@ -1,8 +1,8 @@
 import type {Request, ResponseObject, ResponseToolkit} from '@hapi/hapi';
 
 import Painting from '../models/Painting';
-import messages from '../utils/messages';
-import {sendError, sendSuccess} from '../utils/responses';
+import messages from '../server/messages';
+import {sendError, sendSuccess} from '../server/responses';
 
 export const getAllPaintingsHandler = async (
   request: Request,

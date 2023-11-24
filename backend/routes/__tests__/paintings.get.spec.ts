@@ -3,8 +3,8 @@ import {agent as request} from 'supertest';
 
 import paintingsMock from '../../__mocks__/paintings.json';
 import Painting from '../../models/Painting';
-import {init} from '../../server';
-import messages from '../../utils/messages';
+import {initServer} from '../../server';
+import messages from '../../server/messages';
 
 let server: Server;
 const v1 = '/api/v1';
@@ -14,7 +14,7 @@ describe(`Testing GET "${v1}/paintings" routes`, () => {
   Painting.find = jest.fn();
 
   beforeAll(async () => {
-    server = await init();
+    server = await initServer();
   });
 
   beforeEach(() => {

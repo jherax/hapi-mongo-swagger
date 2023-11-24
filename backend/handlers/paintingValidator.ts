@@ -1,7 +1,7 @@
 import type {Request, ResponseToolkit} from '@hapi/hapi';
 
-import messages from '../utils/messages';
-import {sendError} from '../utils/responses';
+import messages from '../server/messages';
+import {sendError} from '../server/responses';
 
 export default function paintingValidator(
   request: Request,

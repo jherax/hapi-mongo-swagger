@@ -1,8 +1,8 @@
 import type {Request, ResponseToolkit} from '@hapi/hapi';
 
 import HealthCheck from '../models/HealthCheck';
-import messages from '../utils/messages';
-import {sendError, sendSuccess} from '../utils/responses';
+import messages from '../server/messages';
+import {sendError, sendSuccess} from '../server/responses';
 
 const healthCheckHandler = async (request: Request, reply: ResponseToolkit) => {
   const healthStatus = {

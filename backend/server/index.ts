@@ -1,16 +1,16 @@
 import {Server} from '@hapi/hapi';
 import Qs from 'qs';
 
-import config from './config/server.cfg';
-import registerPlugins from './config/server.plugins';
-import connectDb from './db/mongodb';
-import registerRoutes from './routes';
-import logger from './utils/logger';
+import connectDb from '../db/mongodb';
+import registerRoutes from '../routes';
+import logger from '../utils/logger';
+import config from './config';
+import registerPlugins from './plugins';
 
 const {host, port} = config.app;
 let server: Server;
 
-export const init = async () => {
+export const initServer = async () => {
   /**
    * @see https://akhromieiev.com/tutorials/using-cors-in-hapi/
    */
@@ -40,15 +40,15 @@ export const init = async () => {
   return server;
 };
 
-export const prepareDb = async () => {
-  server.listener.on('ready', start);
-  connectDb(server);
+export const startServer = async () => {
+  await server.start();
+  logger.info(`🤖 Hapi server running at ${server.info.uri}`);
   return server;
 };
 
-export const start = async () => {
-  await server.start();
-  logger.info(`🤖 Hapi server running at ${server.info.uri}`);
+export const initDb = async () => {
+  server.listener.on('ready', startServer);
+  connectDb(server);
   return server;
 };
 

@@ -1,7 +1,7 @@
 import type {Server} from '@hapi/hapi';
 import mongoose from 'mongoose';
 
-import config from '../config/server.cfg';
+import config from '../server/config';
 import logger from '../utils/logger';
 
 /**

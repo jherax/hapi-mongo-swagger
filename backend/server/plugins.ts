@@ -2,7 +2,7 @@ import Boom from '@hapi/boom';
 import type {Request, ResponseToolkit, Server} from '@hapi/hapi';
 
 import logger from '../utils/logger';
-import config from './server.cfg';
+import config from './config';
 
 export default function registerPlugins(server: Server) {
   return server.register({

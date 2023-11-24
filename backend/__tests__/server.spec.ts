@@ -1,6 +1,6 @@
 import type {Server} from '@hapi/hapi';
 
-import {init} from '../server';
+import {initServer} from '../server';
 
 /**
  * The init() function will initialize the server (starts cache,
@@ -17,7 +17,7 @@ describe('Server GET "/"', () => {
   let server: Server;
 
   beforeEach(async () => {
-    server = await init();
+    server = await initServer();
   });
 
   afterEach(async () => {

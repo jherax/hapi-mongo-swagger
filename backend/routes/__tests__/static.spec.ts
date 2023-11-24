@@ -1,12 +1,12 @@
 import type {Server} from '@hapi/hapi';
 import {agent as request} from 'supertest';
 
-import {init} from '../../server';
+import {initServer} from '../../server';
 
 let server: Server;
 
 beforeAll(async () => {
-  server = await init();
+  server = await initServer();
 });
 
 afterAll(async () => {

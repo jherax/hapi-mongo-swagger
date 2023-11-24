@@ -2,8 +2,8 @@ import type {Server} from '@hapi/hapi';
 import {agent as request} from 'supertest';
 
 import HealthCheck from '../../models/HealthCheck';
-import {init} from '../../server';
-import messages from '../../utils/messages';
+import {initServer} from '../../server';
+import messages from '../../server/messages';
 
 let server: Server;
 const {SERVICE_UNAVAILABLE, INTERNAL_SERVER_ERROR, TOO_MANY_REQUESTS} =
@@ -13,7 +13,7 @@ describe(`Testing GET "/healthcheck"`, () => {
   const findOneAndUpdateSpy = jest.spyOn(HealthCheck, 'findOneAndUpdate');
 
   beforeAll(async () => {
-    server = await init();
+    server = await initServer();
   });
 
   afterEach(() => {

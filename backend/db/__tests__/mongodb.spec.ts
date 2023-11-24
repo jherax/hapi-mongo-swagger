@@ -1,8 +1,8 @@
 import type {Server} from '@hapi/hapi';
 import mongoose, {type Mongoose} from 'mongoose';
 
-import config from '../../config/server.cfg';
-import {init} from '../../server';
+import {initServer} from '../../server';
+import config from '../../server/config';
 import logger from '../../utils/logger';
 import connectDb from '../mongodb';
 
@@ -27,7 +27,7 @@ describe('Connect database with retry', () => {
   beforeAll(async () => {
     const TIMESTAMP = new Date().toISOString();
     jest.useFakeTimers().setSystemTime(new Date(TIMESTAMP));
-    server = await init();
+    server = await initServer();
   });
 
   beforeEach(() => {

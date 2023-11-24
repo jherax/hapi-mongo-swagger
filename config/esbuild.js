@@ -24,7 +24,7 @@ const sharedConfig = {
   tsconfig: 'config/tsconfig.build.json',
   drop: ['debugger'],
   alias: {
-    chalk: 'backend/config/chalk.prd',
+    chalk: 'backend/utils/chalk.prd',
   },
 };
 

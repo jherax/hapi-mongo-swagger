@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import winston, {format as wformat} from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 
-import config from '../config/server.cfg';
+import config from '../server/config';
 
 const levels = {
   error: chalk.red.bold,

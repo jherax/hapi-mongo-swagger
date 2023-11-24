@@ -1,6 +1,6 @@
 import type {ResponseToolkit} from '@hapi/hapi';
 
-import messages from '../utils/messages';
+import messages from './messages';
 
 /** @see https://futurestud.io/tutorials/hapi-how-to-set-response-status-code */
 
