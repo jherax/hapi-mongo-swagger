@@ -13,8 +13,6 @@ const expectedArgs = {
   connectFail: '🍃 MongoDB connection failed, retry in 2 secs.',
   connectUrl: `mongodb://${username}:${password}@${host}:${port}/${database}`,
   connectOptions: {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
     autoIndex: false,
   },
 };

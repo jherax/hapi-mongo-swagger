@@ -14,8 +14,6 @@ let timerId: NodeJS.Timeout;
 const MAX_TRIES = 10;
 
 const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true, // Use new server discovery and monitoring engine
   autoIndex: false, // Don't build indexes
   // maxPoolSize: 10, // Maintain up to 10 socket connections
 };

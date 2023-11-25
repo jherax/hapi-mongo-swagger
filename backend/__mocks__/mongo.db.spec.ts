@@ -18,8 +18,6 @@ describe('Testing the mongodb-memory-server', () => {
   // Tests that the function uses the correct connection options and checks the readyState
   it('should use correct connection options and check readyState', async () => {
     const options = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       autoIndex: false,
     };
     expect(connectSpy).toHaveBeenCalledWith(expect.any(String), options);

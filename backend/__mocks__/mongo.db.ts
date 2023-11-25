@@ -9,8 +9,6 @@ let mongo: MongoMemoryServer = undefined;
 
 export const setUp = async () => {
   const options = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true, // Use new server discovery and monitoring engine
     autoIndex: false, // Don't build indexes
   };
   if (!mongo) {

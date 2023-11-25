@@ -2,7 +2,7 @@
  * @see https://dev.to/brayanarrieta/how-to-integrate-eslint-with-your-react-typescript-project-2021-182n
  */
 module.exports = {
-  plugins: ['react', 'simple-import-sort', '@typescript-eslint'],
+  plugins: ['simple-import-sort', '@typescript-eslint'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -13,17 +13,12 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2021, // Use the latest ecmascript standard
     sourceType: 'module', // Allows using import/export statements
-    ecmaFeatures: {
-      jsx: true,
-    },
   },
   env: {
     es2021: true,
-    browser: true, // Enables browser globals like window and document
     node: true, // Enables Node.js global variables and Node.js scoping.
     jest: true,
   },
-  globals: {},
   rules: {
     curly: 'error',
     'no-console': 'error',
