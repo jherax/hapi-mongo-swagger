@@ -19,9 +19,6 @@ lib-cov
 build/
 dist/
 
-# public files
-public/
-
 # Cache for Jest, Styleint and Eslint and
 # parcel-bundler (https://parceljs.org/)
 .cache

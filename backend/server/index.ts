@@ -29,7 +29,12 @@ export const initServer = async () => {
   server = new Server({
     host,
     port,
-    routes: {cors: corsOptions},
+    routes: {
+      cors: corsOptions,
+      files: {
+        relativeTo: config.app.public,
+      },
+    },
     router: {stripTrailingSlash: true},
     query: {parser: query => Qs.parse(query)},
   });

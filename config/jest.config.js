@@ -7,8 +7,24 @@ const config = {
   silent: true,
   verbose: false,
   transform: {
-    '^.+\\.tsx?$': '@swc/jest', // ts-jest, esbuild-jest
-    // https://miyauchi.dev/posts/speeding-up-jest/
+    '^.+\\.tsx?$': [
+      // https://miyauchi.dev/posts/speeding-up-jest/
+      // https://swc.rs/docs/configuration/compilation
+      '@swc/jest', // ts-jest, esbuild-jest
+      {
+        jsc: {
+          parser: {
+            syntax: 'typescript',
+            tsx: true,
+            dynamicImport: true,
+            decorators: true,
+            decoratorsBeforeExport: true,
+            importMeta: true,
+          },
+        },
+        isModule: true,
+      },
+    ],
   },
   roots: ['<rootDir>/backend', '<rootDir>/scripts'],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',

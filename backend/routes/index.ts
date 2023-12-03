@@ -8,8 +8,9 @@ export default function registerRoutes(server: Server) {
     {
       method: 'GET',
       path: '/',
-      handler: () => {
-        return `<h3>GraphQL API with Nodejs, Swagger and MongoDB</h3>`;
+      handler: function (request, h) {
+        // https://hapi.dev/tutorials/servingfiles/
+        return h.file('README.html');
       },
     },
     ...healthRoutes(),

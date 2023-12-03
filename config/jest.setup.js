@@ -1,3 +1,5 @@
+const path = require('node:path');
+
 /**
  * Jest-Timers
  * @see https://jestjs.io/docs/timer-mocks
@@ -25,6 +27,7 @@ jest.mock('../backend/server/config', () => {
     app: {
       host: 'localhost',
       port: 8888,
+      public: path.join(process.cwd(), '/backend/public'),
       logLevel: 'info',
       maxRequests: 5,
     },

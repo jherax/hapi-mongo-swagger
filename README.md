@@ -1,4 +1,4 @@
-# hapi-mongo-swagger
+# GraphQL API based on Hapi with Swagger powered by MongoDB
 
 [GraphQL](https://graphql.org/) API based on Nodejs with
 [Swagger](https://swagger.io/) documentation powered by
