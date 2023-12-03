@@ -76,7 +76,9 @@ describe(`Testing GET "/healthcheck"`, () => {
 
   // Tests that the rate limiter middleware is used when making a GET request to '/healthcheck'
   it('should use rate limiter middleware and get an error for limit of requests exceeded', async () => {
-    // limit each IP to 3 requests per window (every hour)
+    // Current setting 'hapi-rate-limit': {userPathLimit: 5}
+    // Limits each IP to 5 requests per window (every hour).
+    // Consider all previous request() are teken into account.
     const responses = await Promise.all([
       request(server.listener).get(`/healthcheck`),
       request(server.listener).get(`/healthcheck`),

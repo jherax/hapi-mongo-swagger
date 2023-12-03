@@ -3,7 +3,7 @@
 # https://dev.to/dariansampare/setting-up-docker-typescript-node-hot-reloading-code-changes-in-a-running-container-2b2f
 
 # BASE STAGE
-FROM node:16-alpine3.17 AS base
+FROM node:20.10-alpine3.17 AS base
 
 ARG dir=.
 WORKDIR /app_built

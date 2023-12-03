@@ -6,7 +6,12 @@
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
+      "runtimeArgs": [
+        "--dns-result-order=ipv4first",
+        "--nolazy",
+        "-r",
+        "ts-node/register/transpile-only"
+      ],
       "args": [],
       "program": "backend/index.ts",
       "cwd": "${workspaceRoot}",

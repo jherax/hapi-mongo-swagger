@@ -5,7 +5,7 @@ import healthCheckHandler from '../handlers/healthCheckHandler';
 const pluginsOptions = {
   'hapi-rate-limit': {
     enabled: true,
-    userPathLimit: 3,
+    userPathLimit: 5,
   },
 };
 
