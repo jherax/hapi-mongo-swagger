@@ -31,10 +31,14 @@
     "test:watch": "jest -c=config/jest.config.js --silent=false --verbose --watch"
   },
   "dependencies": {
+    "@apollo/server": "^4.9.5",
+    "@as-integrations/hapi": "^2.0.1",
     "@hapi/boom": "~10.0.1",
-    "@hapi/hapi": "~21.3.2",
+    "@hapi/hapi": "~20.3.0",
     "@hapi/inert": "~7.1.0",
     "chalk": "~4.1.2",
+    "graphql": "^16.8.1",
+    "graphql-tag": "^2.12.6",
     "hapi-rate-limit": "~7.1.0",
     "mongoose": "~7.6.5",
     "qs": "~6.11.2",
@@ -45,6 +49,8 @@
   "devDependencies": {
     "@commitlint/cli": "~18.4.3",
     "@commitlint/config-conventional": "~18.4.3",
+    "@graphql-tools/mock": "^9.0.0",
+    "@graphql-tools/schema": "^10.0.2",
     "@swc/jest": "~0.2.29",
     "@types/jest": "~29.5.10",
     "@types/node": "~20.10.0",

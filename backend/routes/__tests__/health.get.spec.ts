@@ -3,6 +3,7 @@ import {agent as request} from 'supertest';
 
 import HealthCheck from '../../models/HealthCheck';
 import {initServer} from '../../server';
+import initApollo from '../../server/apollo';
 import messages from '../../server/messages';
 
 let server: Server;
@@ -13,7 +14,8 @@ describe(`Testing GET "/healthcheck"`, () => {
   const findOneAndUpdateSpy = jest.spyOn(HealthCheck, 'findOneAndUpdate');
 
   beforeAll(async () => {
-    server = await initServer();
+    const apolloServer = await initApollo();
+    server = await initServer(apolloServer);
   });
 
   afterEach(() => {

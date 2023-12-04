@@ -2,6 +2,7 @@ import type {Server} from '@hapi/hapi';
 import {agent as request} from 'supertest';
 
 import {initServer} from '../../server';
+import initApollo from '../../server/apollo';
 
 /**
  * The init() function will initialize the server (starts cache,
@@ -16,7 +17,8 @@ import {initServer} from '../../server';
 let server: Server;
 
 beforeAll(async () => {
-  server = await initServer();
+  const apolloServer = await initApollo();
+  server = await initServer(apolloServer);
 });
 
 afterAll(async () => {

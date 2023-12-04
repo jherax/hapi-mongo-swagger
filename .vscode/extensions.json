@@ -8,7 +8,8 @@
     "davidanson.vscode-markdownlint",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "humao.rest-client"
+    "humao.rest-client",
+    "GraphQL.vscode-graphql-syntax"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
   "unwantedRecommendations": []

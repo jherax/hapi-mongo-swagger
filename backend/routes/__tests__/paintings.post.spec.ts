@@ -4,6 +4,7 @@ import {agent as request} from 'supertest';
 import * as dbMock from '../../__mocks__/mongo.db';
 import Painting from '../../models/Painting';
 import {initServer} from '../../server';
+import initApollo from '../../server/apollo';
 import messages from '../../server/messages';
 
 let server: Server;
@@ -20,7 +21,8 @@ describe(`Testing POST "${v1}/paintings" routes`, () => {
 
   beforeAll(async () => {
     await dbMock.setUp();
-    server = await initServer();
+    const apolloServer = await initApollo();
+    server = await initServer(apolloServer);
   });
 
   afterEach(async () => {

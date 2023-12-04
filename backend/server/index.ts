@@ -1,3 +1,4 @@
+import type {ApolloServer, BaseContext} from '@apollo/server';
 import {Server} from '@hapi/hapi';
 import Qs from 'qs';
 
@@ -10,7 +11,18 @@ import registerPlugins from './plugins';
 const {host, port} = config.app;
 let server: Server;
 
-export const initServer = async () => {
+/**
+ * Do not call, initServer() and startServer(). This will allow you to initialize and start
+ * the server from different files. The initServer() function will initialize the
+ * server (starts the caches, finalizes plugin registration) but does not start
+ * the server. This is what you will use in your tests. The startServer() function
+ * will actually start the server. This is what you will use in our main
+ * entry-point for the server.
+ *
+ * @see https://hapi.dev/tutorials/testing
+ */
+
+export const initServer = async (apolloServer: ApolloServer<BaseContext>) => {
   /**
    * @see https://akhromieiev.com/tutorials/using-cors-in-hapi/
    */
@@ -39,7 +51,7 @@ export const initServer = async () => {
     query: {parser: query => Qs.parse(query)},
   });
 
-  await registerPlugins(server);
+  await registerPlugins(server, apolloServer);
   registerRoutes(server);
   await server.initialize();
   return server;
@@ -56,19 +68,3 @@ export const initDb = async () => {
   connectDb(server);
   return server;
 };
-
-process.on('unhandledRejection', err => {
-  logger.error(err);
-  process.exit(1);
-});
-
-/**
- * Do not call, init() and start(). This will allow you to initialize and start
- * the server from different files. The init() function will initialize the
- * server (starts the caches, finalizes plugin registration) but does not start
- * the server. This is what you will use in your tests. The start() function
- * will actually start the server. This is what you will use in our main
- * entry-point for the server
- *
- * @see https://hapi.dev/tutorials/testing
- */

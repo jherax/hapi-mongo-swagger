@@ -33,11 +33,7 @@ export const savePaintingHandler = async (
     if (validated.statusCode !== 200) {
       return validated;
     }
-    const painting = new Painting({
-      name,
-      url,
-      techniques,
-    });
+    const painting = new Painting({name, url, techniques});
     const data = await painting.save();
     return sendSuccess<IPainting>(reply, messages.SUCCESSFUL_ADDED, data);
   } catch (error) {

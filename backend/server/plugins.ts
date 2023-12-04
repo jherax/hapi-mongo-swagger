@@ -1,3 +1,5 @@
+import type {ApolloServer, BaseContext} from '@apollo/server';
+import hapiApolloPlugin from '@as-integrations/hapi';
 import Boom from '@hapi/boom';
 import type {Request, ResponseToolkit, Server} from '@hapi/hapi';
 import inertPlugin from '@hapi/inert';
@@ -6,8 +8,11 @@ import rateLimitPlugin from 'hapi-rate-limit';
 import logger from '../utils/logger';
 import config from './config';
 
-export default function registerPlugins(server: Server) {
-  return server.register([
+export default function registerPlugins(
+  hapiServer: Server,
+  apolloServer: ApolloServer<BaseContext>,
+) {
+  return hapiServer.register([
     inertPlugin,
     {
       /** @see https://github.com/wraithgar/hapi-rate-limit */
@@ -29,6 +34,17 @@ export default function registerPlugins(server: Server) {
           error.reformat();
           return error;
         },
+      },
+    },
+    {
+      /** @see https://www.npmjs.com/package/@as-integrations/hapi */
+      plugin: hapiApolloPlugin,
+      options: {
+        apolloServer,
+        path: '/graphql',
+        context: async ({request}) => ({
+          token: request.headers.token,
+        }),
       },
     },
   ]);

@@ -2,6 +2,7 @@ import type {Server} from '@hapi/hapi';
 import mongoose, {type Mongoose} from 'mongoose';
 
 import {initServer} from '../../server';
+import initApollo from '../../server/apollo';
 import config from '../../server/config';
 import logger from '../../utils/logger';
 import connectDb from '../mongodb';
@@ -25,7 +26,8 @@ describe('Connect database with retry', () => {
   beforeAll(async () => {
     const TIMESTAMP = new Date().toISOString();
     jest.useFakeTimers().setSystemTime(new Date(TIMESTAMP));
-    server = await initServer();
+    const apolloServer = await initApollo();
+    server = await initServer(apolloServer);
   });
 
   beforeEach(() => {

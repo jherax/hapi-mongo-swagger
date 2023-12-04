@@ -1,4 +1,7 @@
 const path = require('node:path');
+const {ApolloServer} = require('@apollo/server');
+const {addMocksToSchema} = require('@graphql-tools/mock');
+const {makeExecutableSchema} = require('@graphql-tools/schema');
 
 /**
  * Jest-Timers
@@ -52,5 +55,43 @@ jest.mock('../backend/utils/logger', function () {
     warn: jest.fn(),
     info: jest.fn(),
     debug: jest.fn(),
+  };
+});
+
+/** @see https://www.apollographql.com/docs/apollo-server/testing/mocking/ */
+jest.mock('../backend/server/apollo', () => {
+  const typeDefs = `#graphql
+  type Painting {
+    id: String
+    name: String
+    url: String
+    techniques: [String]
+  }
+
+  type Query {
+    resolved: String
+  }
+  `;
+
+  const resolvers = {
+    Query: {
+      resolved: () => 'Painting Resolved',
+    },
+  };
+
+  const apolloServer = new ApolloServer({
+    // addMocksToSchema accepts a schema instance and provides
+    // mocked data for each field in the schema
+    schema: addMocksToSchema({
+      schema: makeExecutableSchema({typeDefs, resolvers}),
+    }),
+  });
+
+  return {
+    __esModule: true,
+    default: jest.fn(async () => {
+      await apolloServer.start();
+      return apolloServer;
+    }),
   };
 });
