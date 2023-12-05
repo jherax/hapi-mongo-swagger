@@ -378,6 +378,7 @@ flexibility over the boilerplate code.</p>
 <code>.env</code> file with the following environment variables:</p>
 <pre class="hljs"><code><div>APP_HOST=localhost
 APP_PORT=4000
+NODE_ENV=dev <span class="hljs-comment"># qa | prod</span>
 </div></code></pre>
 <p>Also you may change the log level by setting the env variable <code>LOG_LEVEL</code> to the
 available values <code>error | warn | info | debug</code>. By default <code>LOG_LEVEL</code> is set to
@@ -403,8 +404,13 @@ npm run prepare
 <pre class="hljs"><code><div>npm run mongod
 npm run dev-server
 </div></code></pre>
+<p>💡 When running in non-production environment, the <code>/graphql</code> and <code>/sandbox</code>
+paths are enabled to run an
+<a href="https://www.apollographql.com/docs/graphos/explorer/sandbox/">Apollo Sandbox</a>
+environment where we can now execute GraphQL our queries on our own server.</p>
+<p>Using the default path: <a href="http://localhost:4000/sandbox">localhost:4000/sandbox</a></p>
 <p>⚠️ Running the local server requires docker, if docker has not been configured,
-then follow next steps 👇</p>
+then follow next steps: <a href="#docker">docker</a> 👇</p>
 <h2 id="docker">docker</h2>
 <p>MongoDB is loaded as a docker container, sou you need to make sure to create a
 <code>.env</code> file with the following environment variables:</p>

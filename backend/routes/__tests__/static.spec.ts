@@ -34,4 +34,11 @@ describe("Testing router's default paths", () => {
       'GraphQL API based on Hapi with Swagger powered by MongoDB',
     );
   });
+
+  it('should serve the Apollo Sandbox when calling GET "/sandbox"', async () => {
+    const reply = await request(server.listener).get('/sandbox');
+    expect(reply.statusCode).toEqual(200);
+    expect(reply.type).toBe('text/html');
+    expect(reply.text).toMatch("id='embedded-sandbox'");
+  });
 });

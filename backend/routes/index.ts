@@ -1,18 +1,20 @@
-import type {Server} from '@hapi/hapi';
+import type {Request, ResponseToolkit, Server} from '@hapi/hapi';
 
 import healthRoutes from './health';
 import paintingRoutes from './paintings';
+import sandboxRoutes from './sandbox';
 
 export default function registerRoutes(server: Server) {
   server.route([
     {
       method: 'GET',
       path: '/',
-      handler: function (request, h) {
-        // https://hapi.dev/tutorials/servingfiles/
-        return h.file('README.html');
+      /** @see https://hapi.dev/tutorials/servingfiles/ */
+      handler: function (request: Request, reply: ResponseToolkit) {
+        return reply.file('README.html');
       },
     },
+    ...sandboxRoutes(),
     ...healthRoutes(),
     ...paintingRoutes(),
   ]);

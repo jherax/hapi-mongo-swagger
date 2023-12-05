@@ -21,7 +21,7 @@
     "mongod": "node scripts/start-mongod.js",
     "clean": "rimraf dist",
     "build": "tsc -p config/tsconfig.build.json",
-    "build-prd": "node config/esbuild.js",
+    "build-prd": "NODE_ENV=prod node config/esbuild.js",
     "build-all": "run-s clean build-prd",
     "ts-config": "npm run build -- --showConfig",
     "dev-server": "concurrently -k \"npm:build -- -w\" \"nodemon --dns-result-order=ipv4first --trace-warnings dist/index.js\"",

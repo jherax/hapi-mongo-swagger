@@ -1,0 +1,15 @@
+<!-- https://www.apollographql.com/blog/tooling/graphql-ide/how-to-use-apollo-sandbox-on-your-localhost/ -->
+<div id='embedded-sandbox' style="position:absolute;top:0;right:0;bottom:0;left:0;"></div>
+<script
+  src="https://embeddable-sandbox.cdn.apollographql.com/_latest/embeddable-sandbox.umd.production.min.js"></script>
+<script>
+  const fullpath = window.location.href;
+  const pathname = window.location.pathname;
+  new window.EmbeddedSandbox({
+    target: '#embedded-sandbox',
+    // Pass through your server href if you are embedding on an endpoint.
+    // Otherwise, you can pass whatever endpoint you want Sandbox to start up with here.
+    initialEndpoint: fullpath.replace(pathname, '/graphql')
+    // advanced options: https://www.apollographql.com/docs/studio/explorer/sandbox#embedding-sandbox
+  });
+</script>

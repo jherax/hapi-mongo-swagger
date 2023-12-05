@@ -18,6 +18,7 @@ Make sure to set the env variables. For local environment you can create a
 ```bash
 APP_HOST=localhost
 APP_PORT=4000
+NODE_ENV=dev # qa | prod
 ```
 
 Also you may change the log level by setting the env variable `LOG_LEVEL` to the
@@ -57,8 +58,15 @@ npm run mongod
 npm run dev-server
 ```
 
+💡 When running in non-production environment, the `/graphql` and `/sandbox`
+paths are enabled to run an
+[Apollo Sandbox](https://www.apollographql.com/docs/graphos/explorer/sandbox/)
+environment where we can now execute GraphQL our queries on our own server.
+
+Using the default path: [localhost:4000/sandbox](http://localhost:4000/sandbox)
+
 ⚠️ Running the local server requires docker, if docker has not been configured,
-then follow next steps 👇
+then follow next steps: [docker](#docker) 👇
 
 ## docker
 
