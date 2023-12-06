@@ -31,7 +31,7 @@ describe(`Testing GET "${v1}/paintings" routes`, () => {
     mockPaintingFind(paintingsMock);
     const reply = await request(server.listener).get(`${v1}/paintings`);
     expect(reply.statusCode).toEqual(200);
-    expect(reply.body.data).toHaveLength(2);
+    expect(reply.body.data).toHaveLength(4);
     expect(Painting.find).toHaveBeenCalledTimes(1);
   });
 

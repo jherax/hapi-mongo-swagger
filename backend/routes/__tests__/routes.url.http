@@ -5,9 +5,10 @@ Content-Type: application/json
 User-Agent: Aldous-Huxley-v1.0
 
 {
-  "name": "Oil Painting Techniques And Styles",
-  "url": "https://artignition.com/oil-painting-techniques/",
-  "techniques": ["Glazing", "Wet-on-Wet", "Blending", "Scumbling"]
+    "name": "The Kiss",
+    "year": "1907-1908",
+    "author": "Gustav Klimt",
+    "url": "https://www.timeout.com/newyork/art/top-famous-paintings-in-art-history-ranked",
 }
 
 # ---

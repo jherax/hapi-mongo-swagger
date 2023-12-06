@@ -18,16 +18,27 @@ const paintingSchema = gql`
     getPaintings(limit: Int, page: Int): PaintingsResponse
   }
 
-  input PaintingInput {
+  input CreatePaintingInput {
     name: String!
-    url: String!
-    techniques: [String!]!
+    author: String!
+    year: String!
+    url: String
+  }
+
+  input EditPaintingInput {
+    name: String
+    author: String
+    year: String
+    url: String
   }
 
   type Mutation {
-    createPainting(paintingInput: PaintingInput!): PaintingResponse
+    createPainting(paintingInput: CreatePaintingInput!): PaintingResponse
     deletePainting(id: String!): PaintingResponse
-    editPainting(id: String!, paintingInput: PaintingInput!): PaintingResponse
+    editPainting(
+      id: String!
+      paintingInput: EditPaintingInput!
+    ): PaintingResponse
   }
 `;
 

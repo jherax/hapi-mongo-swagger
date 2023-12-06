@@ -1,20 +1,38 @@
 [
   {
     "_id": "64c4279c0d801e7604113a10",
-    "name": "Oil Painting Techniques And Styles: 1",
-    "url": "https://artignition.com/oil-painting-techniques/",
-    "techniques": ["Glazing", "Wet-on-Wet", "Blending", "Scumbling"],
+    "name": "Mona Lisa",
+    "author": "Leonardo Da Vinci",
+    "year": "1503-1517",
+    "url": "https://www.timeout.com/newyork/art/top-famous-paintings-in-art-history-ranked",
     "createdAt": "2023-07-28T20:39:56.591Z",
-    "updatedAt": "2023-07-28T20:39:56.591Z",
-    "__v": 0
+    "updatedAt": "2023-07-28T20:39:56.591Z"
   },
   {
     "_id": "64c435d821874ed2e9a0ac98",
-    "name": "Oil Painting Techniques And Styles: 2",
-    "url": "https://artignition.com/oil-painting-techniques/",
-    "techniques": ["Impasto", "Dry Brushing", "Underpainting", "Imprimatura"],
+    "name": "The Starry Night",
+    "author": "Vincent van Gogh",
+    "year": "1889",
+    "url": "https://media.timeout.com/images/103166739/750/562/image.webp",
     "createdAt": "2023-07-28T21:40:40.847Z",
-    "updatedAt": "2023-07-28T21:40:40.847Z",
-    "__v": 0
+    "updatedAt": "2023-07-28T21:40:40.847Z"
+  },
+  {
+    "_id": "65733864f82a63f5ee390f70",
+    "name": "The Garden of Earthly Delights",
+    "author": "Hieronymus Bosch",
+    "year": "1503-1515",
+    "url": "https://media.timeout.com/images/103166747/750/562/image.webp",
+    "createdAt": "2023-12-08T15:38:12.037Z",
+    "updatedAt": "2023-12-08T15:38:12.037Z"
+  },
+  {
+    "_id": "6573389cf82a63f5ee390f72",
+    "name": "The Birth of Venus",
+    "author": "Sandro Botticelli",
+    "year": "1484-1486",
+    "url": "https://media.timeout.com/images/103166737/750/562/image.webp",
+    "createdAt": "2023-12-08T15:39:08.769Z",
+    "updatedAt": "2023-12-08T15:39:08.769Z"
   }
 ]

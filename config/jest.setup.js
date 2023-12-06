@@ -62,20 +62,26 @@ jest.mock('../backend/utils/logger', function () {
 jest.mock('../backend/server/apollo', () => {
   const typeDefs = `#graphql
   type Painting {
-    id: String
-    name: String
+    _id: String
+    name: String!
+    author: String!
+    year: String!
     url: String
-    techniques: [String]
   }
 
   type Query {
-    resolved: String
+    getPaintingById(id: String!): Painting
   }
   `;
 
   const resolvers = {
     Query: {
-      resolved: () => 'Painting Resolved',
+      getPaintingById: () => ({
+        name: 'The Birth of Venus',
+        author: 'Sandro Botticelli',
+        year: '1484-1486',
+        url: 'https://media.timeout.com/images/103166737/750/562/image.webp',
+      }),
     },
   };
 

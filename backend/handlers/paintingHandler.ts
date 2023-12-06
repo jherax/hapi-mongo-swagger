@@ -28,12 +28,12 @@ export const savePaintingHandler = async (
   reply: ResponseToolkit,
 ) => {
   try {
-    const {name, url, techniques} = request.payload as IPainting;
+    const {name, author, year, url} = request.payload as IPainting;
     const validated = request.preResponses.validated as ResponseObject;
     if (validated.statusCode !== 200) {
       return validated;
     }
-    const painting = new Painting({name, url, techniques});
+    const painting = new Painting({name, author, year, url});
     const data = await painting.save();
     return sendSuccess<IPainting>(reply, messages.SUCCESSFUL_ADDED, data);
   } catch (error) {

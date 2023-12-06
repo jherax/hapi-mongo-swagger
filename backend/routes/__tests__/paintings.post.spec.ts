@@ -14,9 +14,10 @@ const {SUCCESSFUL_ADDED, INCOMPLETE_REQUEST, INTERNAL_SERVER_ERROR} = messages;
 describe(`Testing POST "${v1}/paintings" routes`, () => {
   const PaintingSave = jest.spyOn(Painting.prototype, 'save');
   const PAYLOAD: IPainting = {
-    name: 'Major Painting Styles',
-    url: 'https://www.thoughtco.com/art-styles-explained-realism-to-abstract-2578625',
-    techniques: ['Realism', 'Impressionism', 'Expressionism', 'Abstraction'],
+    name: 'Mona Lisa',
+    year: '1503-1517',
+    author: 'Leonardo Da Vinci',
+    url: 'https://media.timeout.com/images/103166731/750/562/image.webp',
   };
 
   beforeAll(async () => {
@@ -43,8 +44,8 @@ describe(`Testing POST "${v1}/paintings" routes`, () => {
 
     expect(reply.statusCode).toEqual(200);
     expect(outData._id).toBeDefined();
-    expect(outData.createdAt).toBeDefined();
     expect(outData.name).toBe(PAYLOAD.name);
+    expect(outData.createdAt).toBeDefined();
     expect(PaintingSave).toHaveBeenCalledTimes(1);
     expect(reply.body.message).toBe(SUCCESSFUL_ADDED.message);
   });

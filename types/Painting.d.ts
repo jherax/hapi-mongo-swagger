@@ -3,8 +3,9 @@ import {type Model} from 'mongoose';
 declare global {
   declare interface IPainting {
     name: string;
-    url: string;
-    techniques: string[];
+    author: string;
+    year: string;
+    url?: string;
     createdAt?: string;
     updatedAt?: string;
     _id?: string;

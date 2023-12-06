@@ -5,9 +5,19 @@ import mongoose from 'mongoose';
  */
 const PaintingSchema = new mongoose.Schema<IPainting, PaintingModel>(
   {
-    name: String,
+    name: {
+      type: String,
+      required: true,
+    },
+    author: {
+      type: String,
+      required: true,
+    },
+    year: {
+      type: String,
+      required: true,
+    },
     url: String,
-    techniques: [String],
   },
   {
     timestamps: true,

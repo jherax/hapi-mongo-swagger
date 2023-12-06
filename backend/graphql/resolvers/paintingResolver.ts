@@ -51,8 +51,8 @@ const paintingResolver = {
       {paintingInput},
       contextShared,
     ): Promise<PaintingResponse> => {
-      const {name, url, techniques} = paintingInput as IPainting;
-      const painting = new Painting({name, url, techniques});
+      const {name, author, year, url} = paintingInput as IPainting;
+      const painting = new Painting({name, author, year, url});
       const response = createSuccessResponse(`New Painting added`);
       response.result = await painting.save();
       if (!response.result) {
@@ -92,13 +92,17 @@ const paintingResolver = {
         response.success = false;
         response.message = `Painting with id ${id} does not exists.`;
       } else {
-        const {name, url, techniques} = paintingInput;
-        const result = await Painting.updateOne(
-          {_id: id},
-          {name, url, techniques},
-        );
+        const {name, author, year, url} = paintingInput;
+        const edited = {
+          name: name ?? painting.name,
+          author: author ?? painting.author,
+          year: year ?? painting.year,
+          url: url ?? painting.url,
+        };
+        const result = await Painting.updateOne({_id: id}, edited);
         if (result.acknowledged) {
-          response.result = {...painting, ...paintingInput};
+          edited['_id'] = id;
+          response.result = edited;
         }
         if (result.modifiedCount > 1) {
           response.message = `Edited ${result.modifiedCount} Paintings`;

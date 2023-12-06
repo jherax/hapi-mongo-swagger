@@ -8,18 +8,26 @@ export default function paintingValidator(
   reply: ResponseToolkit,
 ) {
   const errorMessages: string[] = [];
-  const {name, url, techniques} = request.payload as IPainting;
+  const {name, author, year, url} = request.payload as IPainting;
 
   if (!name?.length) {
     errorMessages.push('- Painting must have a name');
   }
 
-  if (!url?.length) {
-    errorMessages.push('- Painting url is not set');
+  if (!author?.length) {
+    errorMessages.push('- Painting must have an author');
   }
 
-  if (!techniques?.length) {
-    errorMessages.push('- Painting must have at least one technique');
+  if (!year?.length) {
+    errorMessages.push('- Painting must have a creation year');
+  }
+
+  if (url) {
+    try {
+      new URL(url);
+    } catch (err) {
+      errorMessages.push('- The Painting URL is not valid');
+    }
   }
 
   if (errorMessages.length) {
