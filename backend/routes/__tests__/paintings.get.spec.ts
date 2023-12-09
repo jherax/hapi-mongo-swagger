@@ -11,7 +11,7 @@ let server: Server;
 const v1 = '/api/v1';
 const {SUCCESSFUL, INTERNAL_SERVER_ERROR} = messages;
 
-describe(`Testing GET "${v1}/paintings" routes`, () => {
+describe(`E2E: Testing GET "${v1}/paintings" routes`, () => {
   Painting.find = jest.fn();
 
   beforeAll(async () => {

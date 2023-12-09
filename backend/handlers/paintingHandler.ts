@@ -3,6 +3,7 @@ import type {Request, ResponseObject, ResponseToolkit} from '@hapi/hapi';
 import Painting from '../models/Painting';
 import messages from '../server/messages';
 import {sendError, sendSuccess} from '../server/responses';
+import trimObjectProps from '../utils/trimObjectProps';
 
 export const getAllPaintingsHandler = async (
   request: Request,
@@ -33,7 +34,7 @@ export const savePaintingHandler = async (
     if (validated.statusCode !== 200) {
       return validated;
     }
-    const painting = new Painting({name, author, year, url});
+    const painting = new Painting(trimObjectProps({name, author, year, url}));
     const data = await painting.save();
     return sendSuccess<IPainting>(reply, messages.SUCCESSFUL_ADDED, data);
   } catch (error) {

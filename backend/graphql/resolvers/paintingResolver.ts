@@ -1,4 +1,5 @@
 import Painting from '../../models/Painting';
+import trimObjectProps from '../../utils/trimObjectProps';
 
 export type PaintingResponse = {
   success: boolean;
@@ -52,7 +53,7 @@ const paintingResolver = {
       contextShared,
     ): Promise<PaintingResponse> => {
       const {name, author, year, url} = paintingInput as IPainting;
-      const painting = new Painting({name, author, year, url});
+      const painting = new Painting(trimObjectProps({name, author, year, url}));
       const response = createSuccessResponse(`New Painting added`);
       response.result = await painting.save();
       if (!response.result) {
@@ -71,7 +72,7 @@ const paintingResolver = {
       const painting = await Painting.findById(id);
       if (!painting) {
         response.success = false;
-        response.message = `Painting with id ${id} does not exists.`;
+        response.message = `Painting with id ${id} does not exist`;
       } else {
         const deleted = (await Painting.deleteOne({_id: id})).deletedCount;
         if (deleted > 1) {
@@ -90,15 +91,15 @@ const paintingResolver = {
       const painting = await Painting.findById(id);
       if (!painting) {
         response.success = false;
-        response.message = `Painting with id ${id} does not exists.`;
+        response.message = `Painting with id ${id} does not exist`;
       } else {
-        const {name, author, year, url} = paintingInput;
-        const edited = {
+        const {name, author, year, url} = paintingInput as Partial<IPainting>;
+        const edited = trimObjectProps({
           name: name ?? painting.name,
           author: author ?? painting.author,
           year: year ?? painting.year,
           url: url ?? painting.url,
-        };
+        });
         const result = await Painting.updateOne({_id: id}, edited);
         if (result.acknowledged) {
           edited['_id'] = id;

@@ -1,0 +1,22 @@
+### DOCS: https://github.com/Huachao/vscode-restclient#making-graphql-request
+
+@baseUrl = http://{{$dotenv APP_HOST}}:{{$dotenv APP_PORT}}/graphql
+
+######################
+### Deletes a painting
+# @name DeletePainting
+
+POST {{ baseUrl }}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+mutation DeletePainting($paintingId: String!) {
+  deletePainting(id: $paintingId) {
+    message
+  }
+}
+
+### variables
+{
+  "paintingId": "65735fa9a378824bf2347bf5"
+}

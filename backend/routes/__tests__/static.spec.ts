@@ -25,7 +25,7 @@ afterAll(async () => {
   await server.stop();
 });
 
-describe("Testing router's default paths", () => {
+describe("E2E: Testing router's default paths", () => {
   it('should serve the README file when calling GET "/"', async () => {
     const reply = await request(server.listener).get('/');
     expect(reply.statusCode).toEqual(200);

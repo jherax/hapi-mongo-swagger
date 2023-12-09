@@ -1,0 +1,35 @@
+### DOCS: https://github.com/Huachao/vscode-restclient#making-graphql-request
+
+@baseUrl = http://{{$dotenv APP_HOST}}:{{$dotenv APP_PORT}}/graphql
+
+######################
+### Creates a new painting
+# @name CreatePainting
+
+POST {{ baseUrl }}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+mutation CreatePainting($paintingInput: CreatePaintingInput!) {
+  createPainting(paintingInput: $paintingInput) {
+    message
+    result {
+      _id
+      name
+      author
+      year
+      url
+      createdAt
+    }
+  }
+}
+
+### variables
+{
+  "paintingInput": {
+    "author": "Pablo Picasso",
+    "name": "Guernica",
+    "year": "1937",
+    "url": "https://media.timeout.com/images/105222680/750/562/image.webp"
+  }
+}

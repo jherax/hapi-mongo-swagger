@@ -11,7 +11,7 @@ let server: Server;
 const v1 = '/api/v1';
 const {SUCCESSFUL_ADDED, INCOMPLETE_REQUEST, INTERNAL_SERVER_ERROR} = messages;
 
-describe(`Testing POST "${v1}/paintings" routes`, () => {
+describe(`E2E: Testing POST "${v1}/paintings" routes`, () => {
   const PaintingSave = jest.spyOn(Painting.prototype, 'save');
   const PAYLOAD: IPainting = {
     name: 'Mona Lisa',

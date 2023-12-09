@@ -1,0 +1,79 @@
+### DOCS: https://github.com/Huachao/vscode-restclient#making-graphql-request
+
+@baseUrl = http://{{$dotenv APP_HOST}}:{{$dotenv APP_PORT}}/graphql
+
+######################
+### Gets a painting by its Id
+# @name GetPaintingById
+
+POST {{ baseUrl }}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query GetPaintingById($paintingId: String!) {
+  getPaintingById(id: $paintingId) {
+    message
+    result {
+      _id
+      name
+      author
+      year
+      url
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+### variables
+{
+  "paintingId": "65735fa9a378824bf2347bf5"
+}
+
+######################
+### Gets all paintings
+# @name GetPaintings
+
+POST {{ baseUrl }}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query GetPaintings {
+  getPaintings {
+    message
+    result {
+      _id
+      name
+      author
+      year
+      url
+    }
+  }
+}
+
+######################
+### Gets all paintings (limit results)
+# @name GetPaintings
+
+POST {{ baseUrl }}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query GetPaintings($limit: Int, $page: Int) {
+  getPaintings(limit: $limit, page: $page) {
+    message
+    result {
+      _id
+      name
+      author
+      year
+      url
+    }
+  }
+}
+
+### variables
+{
+  "limit": 3,
+  "page": 2
+}

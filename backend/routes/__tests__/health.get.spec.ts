@@ -10,7 +10,7 @@ let server: Server;
 const {SERVICE_UNAVAILABLE, INTERNAL_SERVER_ERROR, TOO_MANY_REQUESTS} =
   messages;
 
-describe(`Testing GET "/healthcheck"`, () => {
+describe('E2E: Testing GET "/healthcheck"', () => {
   const findOneAndUpdateSpy = jest.spyOn(HealthCheck, 'findOneAndUpdate');
 
   beforeAll(async () => {

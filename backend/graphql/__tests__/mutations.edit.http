@@ -1,0 +1,33 @@
+### DOCS: https://github.com/Huachao/vscode-restclient#making-graphql-request
+
+@baseUrl = http://{{$dotenv APP_HOST}}:{{$dotenv APP_PORT}}/graphql
+
+######################
+### Modifies an existing painting
+# @name EditPainting
+
+POST {{ baseUrl }}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+mutation EditPainting($paintingId: String!, $paintingInput: EditPaintingInput!) {
+  editPainting(id: $paintingId, paintingInput: $paintingInput) {
+    message
+    result {
+      _id
+      name
+      author
+      year
+      url
+    }
+  }
+}
+
+### variables
+{
+  "paintingId": "65735fa9a378824bf2347bf5",
+  "paintingInput": {
+    "author": "Pablo Picasso  ",
+    "name": "  Guernica     "
+  }
+}
