@@ -1,0 +1,76 @@
+### DOCS: https://github.com/Huachao/vscode-restclient#making-graphql-request
+
+@baseUrl = http://{{$dotenv APP_HOST}}:{{$dotenv APP_PORT}}/graphql
+
+######################
+### Gets an user by its Id
+# @name GetPaintingById
+
+POST {{ baseUrl }}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query GetUserById($userId: String!) {
+  getUserById(id: $userId) {
+    message
+    result {
+      _id
+      email
+      password
+      fullname
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+### variables
+{
+  "userId": "6578d40fcabdc280c01b6010"
+}
+
+######################
+### Gets all users
+# @name GetUsers
+
+POST {{ baseUrl }}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query GetUsers {
+  getUsers {
+    message
+    result {
+      _id
+      email
+      password
+      fullname
+    }
+  }
+}
+
+######################
+### Gets all users (limit results)
+# @name GetUsersLimit
+
+POST {{ baseUrl }}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+query GetUsersLimit($limit: Int, $page: Int) {
+  getUsers(limit: $limit, page: $page) {
+    message
+    result {
+      _id
+      email
+      password
+      fullname
+    }
+  }
+}
+
+### variables
+{
+  "limit": 3,
+  "page": 2
+}

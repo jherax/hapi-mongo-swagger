@@ -1,0 +1,34 @@
+[
+  {
+    "_id": "6578c888fdc512cd9fb27aaf",
+    "email": "pablo.picasso@domain.com",
+    "password": "zqEgVcURzKmsm9h",
+    "fullname": "Pablo Picasso",
+    "createdAt": "1702414472434",
+    "updatedAt": "1702414472434"
+  },
+  {
+    "_id": "6578d40fcabdc280c01b6010",
+    "email": "vincent@domain.com",
+    "password": "df9LNBd5z35Znke",
+    "fullname": "Vincent van Gogh",
+    "createdAt": "1702417423275",
+    "updatedAt": "1702417423275"
+  },
+  {
+    "_id": "6578d44bcabdc280c01b6013",
+    "email": "bosch@domain.com",
+    "password": "oV4opfzcPH4JUcB",
+    "fullname": "Hieronymus Bosch",
+    "createdAt": "1702417483605",
+    "updatedAt": "1702417483605"
+  },
+  {
+    "_id": "6578d470cabdc280c01b6016",
+    "email": "botticelli@domain.com",
+    "password": "jQqUVBEtTJ6J48w",
+    "fullname": "Sandro Botticelli",
+    "createdAt": "1702417520306",
+    "updatedAt": "1702417520306"
+  }
+]

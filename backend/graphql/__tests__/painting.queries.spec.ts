@@ -4,10 +4,10 @@ import type {Server} from '@hapi/hapi';
 import {agent as request} from 'supertest';
 
 import paintingsMock from '../../__mocks__/paintings.json';
-import {type PaintingResponse} from '../../graphql/resolvers';
 import Painting from '../../models/Painting';
 import {initServer} from '../../server';
 import initApollo from '../../server/apollo';
+import {type PaintingResponse} from '../resolvers';
 
 let server: Server;
 let findExecMock: () => Promise<IPainting[]>;
@@ -30,7 +30,7 @@ afterAll(async () => {
   await server.stop();
 });
 
-describe('E2E: Testing successful Queries from "/graphql"', () => {
+describe('E2E: Testing successful Painting Queries from "/graphql"', () => {
   it('should respond with a list of Paintings', async () => {
     const keys = '_id,name,author,year,url'.split(',');
     const queryData = {
@@ -98,7 +98,7 @@ describe('E2E: Testing successful Queries from "/graphql"', () => {
     expect(Painting.find).toHaveBeenCalledTimes(1);
   });
 
-  it('should respond with the Painting by Id', async () => {
+  it('should respond with the Painting by its Id', async () => {
     const keys = '_id,name,author,year,url'.split(',');
     const queryData = {
       query: `#graphql
@@ -136,7 +136,7 @@ describe('E2E: Testing successful Queries from "/graphql"', () => {
 
 // ---------------------------------
 
-describe('E2E: Testing failed Queries from "/graphql"', () => {
+describe('E2E: Testing failed Painting Queries from "/graphql"', () => {
   it('should get a null Painting when the Id does not exist', async () => {
     jest.spyOn(Painting, 'findById').mockResolvedValueOnce(null);
 

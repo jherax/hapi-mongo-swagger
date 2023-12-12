@@ -1,0 +1,31 @@
+### DOCS: https://github.com/Huachao/vscode-restclient#making-graphql-request
+
+@baseUrl = http://{{$dotenv APP_HOST}}:{{$dotenv APP_PORT}}/graphql
+
+######################
+### Login an user successfully
+# @name LoginUser
+
+POST {{ baseUrl }}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+mutation LoginUser($input: LoginInput!) {
+  login(input: $input) {
+    message
+    result {
+      _id
+      email
+      fullname
+      jwtoken
+    }
+  }
+}
+
+### variables
+{
+  "input": {
+    "email": "pablo.picasso@domain.com",
+    "password": "zqEgVcURzKmsm9h"
+  }
+}

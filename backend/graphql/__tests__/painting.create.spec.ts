@@ -4,10 +4,10 @@ import type {Server} from '@hapi/hapi';
 import {agent as request} from 'supertest';
 
 import paintingsMock from '../../__mocks__/paintings.json';
-import {type PaintingResponse} from '../../graphql/resolvers';
 import Painting from '../../models/Painting';
 import {initServer} from '../../server';
 import initApollo from '../../server/apollo';
+import {type PaintingResponse} from '../resolvers';
 
 let server: Server;
 const expectedPainting = paintingsMock[1];
