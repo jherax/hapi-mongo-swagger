@@ -36,6 +36,7 @@ const paintingResolver = {
       const allPaintings = await Painting.find()
         .skip(startIndex)
         .limit(limit)
+        // .sort({ createdAt: -1 })
         .lean() // tells Mongoose to skip hydrating the result documents.
         .exec(); // execute the query.
 
@@ -54,11 +55,11 @@ const paintingResolver = {
     ): Promise<PaintingResponse> => {
       const {name, author, year, url} = paintingInput as IPainting;
       const painting = new Painting(trimObjectProps({name, author, year, url}));
-      const response = createSuccessResponse(`New Painting added`);
+      const response = createSuccessResponse('New Painting added');
       response.result = await painting.save();
       if (!response.result) {
         response.success = false;
-        response.message = 'Painting was not added';
+        response.message = 'Unable to add painting';
       }
       return response;
     },

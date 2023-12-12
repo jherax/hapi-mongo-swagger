@@ -10,6 +10,8 @@ const config = {
     public: path.join(process.cwd(), '/backend/public'),
     logLevel: process.env.LOG_LEVEL || 'info',
     maxRequests: +(process.env.MAX_REQUESTS_PER_WINDOW || 100),
+    jwtPrivateKey: process.env.JWT_PRIVATE_KEY,
+    jwtExpiryTime: process.env.JWT_EXPIRY_TIME,
   },
   db: {
     host: process.env.DB_HOST,

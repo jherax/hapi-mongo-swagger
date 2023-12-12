@@ -33,6 +33,8 @@ jest.mock('../backend/server/config', () => {
       public: path.join(process.cwd(), '/backend/public'),
       logLevel: 'info',
       maxRequests: 5,
+      jwtPrivateKey: 'my_secret_word',
+      jwtExpiryTime: '5m',
     },
     db: {
       host: 'localhost',

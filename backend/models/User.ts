@@ -3,27 +3,26 @@ import mongoose from 'mongoose';
 /**
  * @see https://mongoosejs.com/docs/typescript/statics-and-methods.html
  */
-const paintingSchema = new mongoose.Schema<IPainting, PaintingModel>(
+const userSchema = new mongoose.Schema<IUser, UserModel>(
   {
-    name: {
+    email: {
       type: String,
       required: true,
     },
-    author: {
+    password: {
       type: String,
       required: true,
     },
-    year: {
+    fullname: {
       type: String,
       required: true,
     },
-    url: String,
   },
   {
     timestamps: true,
   },
 );
 
-const Painting = mongoose.model('Painting', paintingSchema);
+const User = mongoose.model('User', userSchema);
 
-export default Painting;
+export default User;

@@ -1,0 +1,118 @@
+import jwt from 'jsonwebtoken';
+
+import User from '../../models/User';
+import config from '../../server/config';
+import trimObjectProps from '../../utils/trimObjectProps';
+
+export type UserWithToken = Exclude<IUser, 'password'> & {jwtoken: string};
+export type UserResponse = {
+  success: boolean;
+  message: string;
+  result?: IUser | IUser[] | UserWithToken;
+};
+
+const userResolver = {
+  Query: {
+    getUserById: async (parent, {id}, contextShared): Promise<UserResponse> => {
+      const response = createSuccessResponse('User found');
+      const user = await User.findById(id);
+      if (!user) {
+        response.success = false;
+        response.message = 'User not found';
+      }
+      response.result = user;
+      return response;
+    },
+
+    getUsers: async (
+      parent,
+      {limit, page},
+      contextValue,
+    ): Promise<UserResponse> => {
+      page = +(page || 1);
+      limit = +(limit || 10);
+      const startIndex = (page - 1) * limit;
+
+      const allUsers = await User.find()
+        .skip(startIndex)
+        .limit(limit)
+        // .sort({ createdAt: -1 })
+        .lean() // tells Mongoose to skip hydrating the result documents.
+        .exec(); // execute the query.
+
+      const total = allUsers?.length || 0;
+      const response = createSuccessResponse(`Listing ${total} Users`);
+      response.result = allUsers ?? [];
+      return response;
+    },
+  },
+
+  Mutation: {
+    signup: async (parent, {input}, contextShared): Promise<UserResponse> => {
+      const {email, password, fullname} = trimObjectProps<IUser>(input);
+      const response = createSuccessResponse('New user created');
+      const emailAlreadyExist = await User.findOne({email});
+      if (emailAlreadyExist) {
+        response.success = false;
+        response.message = `User with email '${email}' already exists`;
+        return response;
+      }
+      const userToCreate = new User({email, password, fullname});
+      const user = await userToCreate.save();
+      if (!user) {
+        response.success = false;
+        response.message = `Unable to create user`;
+        return response;
+      }
+      const token = jwt.sign(
+        {userId: user._id, email},
+        config.app.jwtPrivateKey,
+        {expiresIn: config.app.jwtExpiryTime},
+      );
+      response.result = {
+        _id: user._id,
+        email: user.email,
+        fullname: user.fullname,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+        jwtoken: token,
+      } as UserWithToken;
+
+      return response;
+    },
+
+    login: async (parent, {input}, contextShared): Promise<UserResponse> => {
+      const response = createSuccessResponse('Successfully logged in');
+      const {email, password} = trimObjectProps<IUser>(input);
+      const user = await User.findOne({
+        $and: [{email}, {password}],
+      });
+
+      if (!user) {
+        response.success = false;
+        response.message = `Email and password don't match`;
+        return response;
+      }
+
+      const token = jwt.sign(
+        {userId: user._id, email},
+        config.app.jwtPrivateKey,
+        {expiresIn: config.app.jwtExpiryTime},
+      );
+      response.result = {
+        _id: user._id,
+        email: user.email,
+        fullname: user.fullname,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+        jwtoken: token,
+      } as UserWithToken;
+    },
+  },
+};
+
+function createSuccessResponse(message: string): UserResponse {
+  return {success: true, message, result: null};
+}
+
+export default userResolver;

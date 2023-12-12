@@ -379,6 +379,10 @@ flexibility over the boilerplate code.</p>
 <pre class="hljs"><code><div>APP_HOST=localhost
 APP_PORT=4000
 NODE_ENV=dev <span class="hljs-comment"># qa | prod</span>
+
+<span class="hljs-comment"># https://www.npmjs.com/package/jsonwebtoken</span>
+JWT_PRIVATE_KEY=your_own_secret_word
+JWT_EXPIRY_TIME=24h
 </div></code></pre>
 <p>Also you may change the log level by setting the env variable <code>LOG_LEVEL</code> to the
 available values <code>error | warn | info | debug</code>. By default <code>LOG_LEVEL</code> is set to

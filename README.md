@@ -19,6 +19,10 @@ Make sure to set the env variables. For local environment you can create a
 APP_HOST=localhost
 APP_PORT=4000
 NODE_ENV=dev # qa | prod
+
+# https://www.npmjs.com/package/jsonwebtoken
+JWT_PRIVATE_KEY=your_own_secret_word
+JWT_EXPIRY_TIME=24h
 ```
 
 Also you may change the log level by setting the env variable `LOG_LEVEL` to the
