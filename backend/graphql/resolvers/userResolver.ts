@@ -1,7 +1,5 @@
-import jwt from 'jsonwebtoken';
-
 import User from '../../models/User';
-import config from '../../server/config';
+import createToken from '../../utils/createToken';
 import trimObjectProps from '../../utils/trimObjectProps';
 
 export type UserWithToken = Exclude<IUser, 'password'> & {jwtoken: string};
@@ -64,18 +62,13 @@ const userResolver = {
         response.message = `Unable to create user`;
         return response;
       }
-      const token = jwt.sign(
-        {userId: user._id, email},
-        config.app.jwtPrivateKey,
-        {expiresIn: config.app.jwtExpiryTime},
-      );
       response.result = {
         _id: user._id,
         email: user.email,
         fullname: user.fullname,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
-        jwtoken: token,
+        jwtoken: createToken(user),
       } as UserWithToken;
 
       return response;
@@ -94,19 +87,16 @@ const userResolver = {
         return response;
       }
 
-      const token = jwt.sign(
-        {userId: user._id, email},
-        config.app.jwtPrivateKey,
-        {expiresIn: config.app.jwtExpiryTime},
-      );
       response.result = {
         _id: user._id,
         email: user.email,
         fullname: user.fullname,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
-        jwtoken: token,
+        jwtoken: createToken(user),
       } as UserWithToken;
+
+      return response;
     },
   },
 };
