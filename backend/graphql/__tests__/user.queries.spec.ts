@@ -7,6 +7,7 @@ import usersMock from '../../__mocks__/users.json';
 import User from '../../models/User';
 import {initServer} from '../../server';
 import initApollo from '../../server/apollo';
+import filterProps from '../../utils/filterProps';
 import {type UserResponse} from '../resolvers';
 
 let server: Server;
@@ -158,14 +159,4 @@ function getUsers(start?: number, total?: number): IUser[] {
     return [...users];
   }
   return users.slice(start, total);
-}
-
-function filterProps<T>(keys: string[]) {
-  return (obj: T): T => {
-    const mapped = Object.create(null);
-    keys.forEach(prop => {
-      mapped[prop] = obj[prop];
-    });
-    return mapped;
-  };
 }

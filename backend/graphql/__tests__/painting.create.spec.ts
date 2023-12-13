@@ -7,6 +7,7 @@ import paintingsMock from '../../__mocks__/paintings.json';
 import Painting from '../../models/Painting';
 import {initServer} from '../../server';
 import initApollo from '../../server/apollo';
+import filterProps from '../../utils/filterProps';
 import {type PaintingResponse} from '../resolvers';
 
 let server: Server;
@@ -64,7 +65,7 @@ describe('E2E: Testing successful "createPainting" mutation from "/graphql"', ()
     const response: Record<string, PaintingResponse> = reply.body.data;
     const expected: Partial<PaintingResponse> = {
       message: 'New Painting added',
-      result: filterProps(keys, expectedPainting),
+      result: filterProps<IPainting>(keys)(expectedPainting),
     };
 
     expect(response).toEqual({createPainting: expected});
@@ -79,6 +80,7 @@ describe('E2E: Testing failed "createPainting" mutation from "/graphql"', () => 
       mutation CreatePainting($paintingInput: CreatePaintingInput!) {
         createPainting(paintingInput: $paintingInput) {
           message
+          success
         }
       }`,
       variables: {
@@ -105,12 +107,4 @@ describe('E2E: Testing failed "createPainting" mutation from "/graphql"', () => 
 
 function setupMongooseMocks() {
   jest.spyOn(Painting.prototype, 'save').mockResolvedValue(expectedPainting);
-}
-
-function filterProps<T>(keys: string[], obj: T): T {
-  const mapped = Object.create(null);
-  keys.forEach(prop => {
-    mapped[prop] = obj[prop];
-  });
-  return mapped;
 }

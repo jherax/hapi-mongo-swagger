@@ -7,6 +7,7 @@ import paintingsMock from '../../__mocks__/paintings.json';
 import Painting from '../../models/Painting';
 import {initServer} from '../../server';
 import initApollo from '../../server/apollo';
+import filterProps from '../../utils/filterProps';
 import {type PaintingResponse} from '../resolvers';
 
 let server: Server;
@@ -18,7 +19,6 @@ beforeAll(async () => {
 });
 
 beforeEach(() => {
-  findExecMock = () => Promise.resolve(paintingsMock);
   setupMongooseMocks();
 });
 
@@ -145,11 +145,7 @@ describe('E2E: Testing failed Painting Queries from "/graphql"', () => {
       query GetPaintingById($paintingId: String!) {
         getPaintingById(id: $paintingId) {
           message
-          result {
-            _id
-            name
-            author
-          }
+          success
         }
       }`,
       variables: {
@@ -164,7 +160,7 @@ describe('E2E: Testing failed Painting Queries from "/graphql"', () => {
     const response: Record<string, PaintingResponse> = reply.body.data;
     const expected: Partial<PaintingResponse> = {
       message: 'Painting not found',
-      result: null,
+      success: false,
     };
 
     expect(response).toEqual({getPaintingById: expected});
@@ -202,18 +198,8 @@ describe('E2E: Testing failed Painting Queries from "/graphql"', () => {
 
 // ---------------------------------
 
-function getPaintings(start?: number, total?: number): IPainting[] {
-  const paintings: IPainting[] = paintingsMock;
-  if (start == null) {
-    start = 0;
-  }
-  if (total == null) {
-    return [...paintings];
-  }
-  return paintings.slice(start, total);
-}
-
 function setupMongooseMocks() {
+  findExecMock = () => Promise.resolve(paintingsMock);
   jest.spyOn(Painting, 'findById').mockResolvedValue(paintingsMock[0]);
   jest.spyOn(Painting, 'find').mockImplementation(() => {
     return {
@@ -225,12 +211,13 @@ function setupMongooseMocks() {
   });
 }
 
-function filterProps<T>(keys: string[]) {
-  return (obj: T): T => {
-    const mapped = Object.create(null);
-    keys.forEach(prop => {
-      mapped[prop] = obj[prop];
-    });
-    return mapped;
-  };
+function getPaintings(start?: number, total?: number): IPainting[] {
+  const paintings: IPainting[] = paintingsMock;
+  if (start == null) {
+    start = 0;
+  }
+  if (total == null) {
+    return [...paintings];
+  }
+  return paintings.slice(start, total);
 }

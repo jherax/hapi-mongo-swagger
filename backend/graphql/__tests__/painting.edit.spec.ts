@@ -7,10 +7,11 @@ import paintingsMock from '../../__mocks__/paintings.json';
 import Painting from '../../models/Painting';
 import {initServer} from '../../server';
 import initApollo from '../../server/apollo';
+import filterProps from '../../utils/filterProps';
 import {type PaintingResponse} from '../resolvers';
 
 let server: Server;
-const expectedPainting = paintingsMock[3];
+const expectedPainting: IPainting = paintingsMock[3];
 
 beforeAll(async () => {
   const apolloServer = await initApollo();
@@ -62,7 +63,7 @@ describe('E2E: Testing successful "editPainting" mutation from "/graphql"', () =
     const expected: Partial<PaintingResponse> = {
       message: 'Painting edited',
       result: {
-        ...filterProps(keys, expectedPainting),
+        ...filterProps<IPainting>(keys)(expectedPainting),
         year: '1485',
       },
     };
@@ -80,10 +81,7 @@ describe('E2E: Testing failed "editPainting" mutation from "/graphql"', () => {
       mutation EditPainting($paintingId: String!, $paintingInput: EditPaintingInput!) {
         editPainting(id: $paintingId, paintingInput: $paintingInput) {
           message
-          result {
-            name
-            year
-          }
+          success
         }
       }`,
       variables: {
@@ -102,7 +100,7 @@ describe('E2E: Testing failed "editPainting" mutation from "/graphql"', () => {
     const response: Record<string, PaintingResponse> = reply.body.data;
     const expected: Partial<PaintingResponse> = {
       message: `Painting with id ${queryData.variables.paintingId} does not exist`,
-      result: null,
+      success: false,
     };
 
     expect(response).toEqual({editPainting: expected});
@@ -143,12 +141,4 @@ function setupMongooseMocks() {
     .spyOn(Painting, 'updateOne')
     .mockResolvedValue({acknowledged: true, modifiedCount: 1} as never);
   jest.spyOn(Painting, 'findById').mockResolvedValue(expectedPainting);
-}
-
-function filterProps<T>(keys: string[], obj: T): T {
-  const mapped = Object.create(null);
-  keys.forEach(prop => {
-    mapped[prop] = obj[prop];
-  });
-  return mapped;
 }

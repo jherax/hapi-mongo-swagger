@@ -8,10 +8,11 @@ import User from '../../models/User';
 import {initServer} from '../../server';
 import initApollo from '../../server/apollo';
 import createToken from '../../utils/createToken';
+import filterProps from '../../utils/filterProps';
 import {type UserResponse} from '../resolvers';
 
 let server: Server;
-const expectedUser = usersMock[2];
+const expectedUser: IUser = usersMock[2];
 
 beforeAll(async () => {
   const apolloServer = await initApollo();
@@ -62,7 +63,7 @@ describe('E2E: Testing successful "login" mutation from "/graphql"', () => {
     const expected: Partial<UserResponse> = {
       message: 'Successfully logged in',
       result: {
-        ...filterProps(keys, expectedUser),
+        ...filterProps<IUser>(keys)(expectedUser),
         jwtoken: createToken(expectedUser),
       },
     };
@@ -138,12 +139,4 @@ describe('E2E: Testing failed "login" mutation from "/graphql"', () => {
 
 function setupMongooseMocks() {
   jest.spyOn(User, 'findOne').mockResolvedValue(expectedUser);
-}
-
-function filterProps<T>(keys: string[], obj: T): T {
-  const mapped = Object.create(null);
-  keys.forEach(prop => {
-    mapped[prop] = obj[prop];
-  });
-  return mapped;
 }
