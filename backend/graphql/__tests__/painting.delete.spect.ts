@@ -7,8 +7,12 @@ import paintingsMock from '../../__mocks__/paintings.json';
 import Painting from '../../models/Painting';
 import {initServer} from '../../server';
 import initApollo from '../../server/apollo';
+import verifyJwt from '../../utils/verifyJwt';
 import {type PaintingResponse} from '../resolvers';
 
+jest.mock('../../utils/verifyJwt');
+
+const verifyJwtMock = verifyJwt as jest.MockedFunction<typeof verifyJwt>;
 let server: Server;
 
 beforeAll(async () => {
@@ -17,6 +21,7 @@ beforeAll(async () => {
 });
 
 beforeEach(() => {
+  verifyJwtMock.mockReturnValue(true);
   setupMongooseMocks();
 });
 

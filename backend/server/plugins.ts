@@ -42,9 +42,15 @@ export default function registerPlugins(
       options: {
         apolloServer,
         path: '/graphql',
-        context: async ({request}) => ({
-          token: request.headers.token,
-        }),
+        context: async ({request}) => {
+          // we remove the word Bearer that specifies the strategy used,
+          // and then pass the token to the context object in the resolvers.
+          const auth = request.headers.authorization ?? '';
+          const token = auth.replace('Bearer ', '');
+          return {
+            token,
+          };
+        },
       },
     },
   ]);

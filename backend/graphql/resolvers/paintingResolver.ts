@@ -1,5 +1,7 @@
 import Painting from '../../models/Painting';
+import graphQLErrors from '../../utils/graphQLErrors';
 import trimObjectProps from '../../utils/trimObjectProps';
+import verifyJwt from '../../utils/verifyJwt';
 
 export type PaintingResponse = {
   success: boolean;
@@ -14,6 +16,10 @@ const paintingResolver = {
       {id},
       contextShared,
     ): Promise<PaintingResponse> => {
+      if (!verifyJwt(contextShared.token)) {
+        throw graphQLErrors.unauthenticated();
+      }
+
       const response = createSuccessResponse('Painting found');
       const painting = await Painting.findById(id);
       if (!painting) {
@@ -27,8 +33,12 @@ const paintingResolver = {
     getPaintings: async (
       parent,
       {limit, page},
-      contextValue,
+      contextShared,
     ): Promise<PaintingResponse> => {
+      if (!verifyJwt(contextShared.token)) {
+        throw graphQLErrors.unauthenticated();
+      }
+
       page = +(page || 1);
       limit = +(limit || 10);
       const startIndex = (page - 1) * limit;
@@ -53,6 +63,10 @@ const paintingResolver = {
       {paintingInput},
       contextShared,
     ): Promise<PaintingResponse> => {
+      if (!verifyJwt(contextShared.token)) {
+        throw graphQLErrors.unauthenticated();
+      }
+
       const {name, author, year, url} = paintingInput as IPainting;
       const painting = new Painting(trimObjectProps({name, author, year, url}));
       const response = createSuccessResponse('New Painting added');
@@ -69,6 +83,10 @@ const paintingResolver = {
       {id},
       contextShared,
     ): Promise<PaintingResponse> => {
+      if (!verifyJwt(contextShared.token)) {
+        throw graphQLErrors.unauthenticated();
+      }
+
       const response = createSuccessResponse('Painting deleted');
       const painting = await Painting.findById(id);
       if (!painting) {
@@ -88,6 +106,10 @@ const paintingResolver = {
       {id, paintingInput},
       contextShared,
     ): Promise<PaintingResponse> => {
+      if (!verifyJwt(contextShared.token)) {
+        throw graphQLErrors.unauthenticated();
+      }
+
       const response = createSuccessResponse('Painting edited');
       const painting = await Painting.findById(id);
       if (!painting) {

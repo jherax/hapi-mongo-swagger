@@ -1,6 +1,7 @@
 ### DOCS: https://github.com/Huachao/vscode-restclient#making-graphql-request
 
 @baseUrl = http://{{$dotenv APP_HOST}}:{{$dotenv APP_PORT}}/graphql
+@auth_token = {{$dotenv JWT_AUTH_TOKEN}}
 
 ######################
 ### Modifies an existing painting
@@ -8,6 +9,7 @@
 
 POST {{ baseUrl }}
 Content-Type: application/json
+Authorization: Bearer {{ auth_token }}
 X-REQUEST-TYPE: GraphQL
 
 mutation EditPainting($paintingId: String!, $paintingInput: EditPaintingInput!) {

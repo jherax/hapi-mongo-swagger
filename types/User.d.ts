@@ -1,7 +1,7 @@
 import {type Model} from 'mongoose';
 
 declare global {
-  declare interface IUser {
+  interface IUser {
     email: string;
     password: string;
     fullname: string;
@@ -10,7 +10,14 @@ declare global {
     _id?: string;
   }
 
-  declare type UserModel = Model<IUser, Record<string, never>>;
+  type UserModel = Model<IUser, Record<string, never>>;
+
+  interface IUserJwt {
+    userId?: string;
+    email?: string;
+    iat?: number;
+    exp?: number;
+  }
 }
 
 export {};

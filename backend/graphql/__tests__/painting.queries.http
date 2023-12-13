@@ -1,6 +1,8 @@
 ### DOCS: https://github.com/Huachao/vscode-restclient#making-graphql-request
 
 @baseUrl = http://{{$dotenv APP_HOST}}:{{$dotenv APP_PORT}}/graphql
+@auth_token = {{$dotenv JWT_AUTH_TOKEN}}
+
 
 ######################
 ### Gets a painting by its Id
@@ -8,6 +10,7 @@
 
 POST {{ baseUrl }}
 Content-Type: application/json
+Authorization: Bearer {{ auth_token }}
 X-REQUEST-TYPE: GraphQL
 
 query GetPaintingById($paintingId: String!) {
@@ -36,6 +39,7 @@ query GetPaintingById($paintingId: String!) {
 
 POST {{ baseUrl }}
 Content-Type: application/json
+Authorization: Bearer {{ auth_token }}
 X-REQUEST-TYPE: GraphQL
 
 query GetPaintings {
@@ -57,6 +61,7 @@ query GetPaintings {
 
 POST {{ baseUrl }}
 Content-Type: application/json
+Authorization: Bearer {{ auth_token }}
 X-REQUEST-TYPE: GraphQL
 
 query GetPaintingsLimit($limit: Int, $page: Int) {

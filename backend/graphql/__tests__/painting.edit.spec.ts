@@ -8,10 +8,14 @@ import Painting from '../../models/Painting';
 import {initServer} from '../../server';
 import initApollo from '../../server/apollo';
 import filterProps from '../../utils/filterProps';
+import verifyJwt from '../../utils/verifyJwt';
 import {type PaintingResponse} from '../resolvers';
 
-let server: Server;
+jest.mock('../../utils/verifyJwt');
+
+const verifyJwtMock = verifyJwt as jest.MockedFunction<typeof verifyJwt>;
 const expectedPainting: IPainting = paintingsMock[3];
+let server: Server;
 
 beforeAll(async () => {
   const apolloServer = await initApollo();
@@ -19,6 +23,7 @@ beforeAll(async () => {
 });
 
 beforeEach(() => {
+  verifyJwtMock.mockReturnValue(true);
   setupMongooseMocks();
 });
 

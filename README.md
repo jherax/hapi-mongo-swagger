@@ -15,13 +15,14 @@ Hapi enables us to build our API in a very rapid manner.
 Make sure to set the env variables. For local environment you can create a
 `.env` file with the following environment variables:
 
-```bash
+```properties
 APP_HOST=localhost
 APP_PORT=4000
-NODE_ENV=dev # qa | prod
+# dev | prod | qa
+NODE_ENV=dev
 
 # https://www.npmjs.com/package/jsonwebtoken
-JWT_PRIVATE_KEY=your_own_secret_word
+JWT_PRIVATE_KEY=your_own_secret_key
 JWT_EXPIRY_TIME=24h
 ```
 
@@ -62,12 +63,38 @@ npm run mongod
 npm run dev-server
 ```
 
+## Apollo GraphQL
+
+The path that resolves Apollo queries is: `/graphql`.\
+The following queries require the `Authorization` header with a valid JWT token:
+
+- `getPaintings`
+- `getPaintingById`
+- `createPainting`
+- `deletePainting`
+- `editPainting`
+
+You can generate a valid JWT token by executing the query `login`, and retrieve
+the value from the property `"jwtoken"` in the response. See an example of
+generating a valid token for an existing user here:
+[`/user.auth.http`](backend/graphql/__tests__/user.auth.http)
+
+In the `.http` files that require `Authorization` you will see the `@auth_token`
+variable which points to the environment `JWT_AUTH_TOKEN`, so you will need to
+create that variable in your `.env` file in order to get those `.http` files
+working properly.
+
+```properties
+# .env
+JWT_AUTH_TOKEN=some_valid_token_generated_by_login
+```
+
 💡 When running in non-production environment, the `/graphql` and `/sandbox`
 paths are enabled to run an
 [Apollo Sandbox](https://www.apollographql.com/docs/graphos/explorer/sandbox/)
 environment where we can now execute GraphQL our queries on our own server.
 
-Using the default path: [localhost:4000/sandbox](http://localhost:4000/sandbox)
+Default path: [localhost:4000/sandbox](http://localhost:4000/graphql)
 
 ⚠️ Running the local server requires docker, if docker has not been configured,
 then follow next steps: [docker](#docker) 👇
@@ -77,7 +104,7 @@ then follow next steps: [docker](#docker) 👇
 MongoDB is loaded as a docker container, sou you need to make sure to create a
 `.env` file with the following environment variables:
 
-```bash
+```properties
 DB_ROOT_USERNAME=root
 DB_ROOT_PASSWORD=root
 DB_INIT_USERNAME=appuser
