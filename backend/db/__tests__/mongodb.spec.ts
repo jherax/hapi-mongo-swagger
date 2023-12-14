@@ -19,6 +19,7 @@ const expectedArgs = {
 };
 
 describe('Connect database with retry', () => {
+  // prevent the logger methods from writting the terminal
   const logError = jest.spyOn(logger, 'error');
   const logInfo = jest.spyOn(logger, 'info');
   let server: Server;

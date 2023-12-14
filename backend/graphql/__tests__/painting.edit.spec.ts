@@ -73,6 +73,7 @@ describe('E2E: Testing successful "editPainting" mutation from "/graphql"', () =
       },
     };
 
+    expect(reply.status).toBe(200);
     expect(response).toEqual({editPainting: expected});
     expect(Painting.findById).toHaveBeenCalledTimes(1);
     expect(Painting.updateOne).toHaveBeenCalledTimes(1);
@@ -108,6 +109,7 @@ describe('E2E: Testing failed "editPainting" mutation from "/graphql"', () => {
       success: false,
     };
 
+    expect(reply.status).toBe(200);
     expect(response).toEqual({editPainting: expected});
     expect(Painting.updateOne).toHaveBeenCalledTimes(0);
     expect(Painting.findById).toHaveBeenCalledTimes(1);
@@ -131,11 +133,41 @@ describe('E2E: Testing failed "editPainting" mutation from "/graphql"', () => {
       .send(queryData);
 
     const [error] = reply.body.errors;
+    expect(reply.status).toBe(200);
     expect(error.extensions.code).toBe('BAD_USER_INPUT');
     expect(error.locations).toBeDefined();
     expect(error.message).toMatch(
       'Variable "$paintingInput" of required type "EditPaintingInput!" was not provided',
     );
+  });
+
+  it('should throw UNAUTHENTICATED code', async () => {
+    verifyJwtMock.mockReturnValueOnce(false);
+
+    const queryData = {
+      query: `#graphql
+      mutation EditPainting($paintingId: String!, $paintingInput: EditPaintingInput!) {
+        editPainting(id: $paintingId, paintingInput: $paintingInput) {
+          message
+        }
+      }`,
+      variables: {
+        paintingId: '6573389cf82a63f5ee390f72',
+        paintingInput: {
+          name: ' Peppe Le Fou ',
+        },
+      },
+    };
+
+    const reply = await request(server.listener)
+      .post('/graphql')
+      .send(queryData);
+
+    const [error] = reply.body.errors;
+    expect(reply.status).toBe(401);
+    expect(error.locations).toBeDefined();
+    expect(error.extensions.code).toBe('UNAUTHENTICATED');
+    expect(error.message).toMatch('jwt required');
   });
 });
 

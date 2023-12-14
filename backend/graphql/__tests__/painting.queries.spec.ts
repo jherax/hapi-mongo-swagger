@@ -64,6 +64,7 @@ describe('E2E: Testing successful Painting Queries from "/graphql"', () => {
       result: getPaintings().map(filterProps(keys)),
     };
 
+    expect(reply.status).toBe(200);
     expect(response).toEqual({getPaintings: expected});
     expect(Painting.find).toHaveBeenCalledTimes(1);
   });
@@ -99,6 +100,7 @@ describe('E2E: Testing successful Painting Queries from "/graphql"', () => {
       result: paintings.map(filterProps(keys)),
     };
 
+    expect(reply.status).toBe(200);
     expect(response).toEqual({getPaintings: expected});
     expect(Painting.find).toHaveBeenCalledTimes(1);
   });
@@ -134,6 +136,7 @@ describe('E2E: Testing successful Painting Queries from "/graphql"', () => {
       result: filterProps<IPainting>(keys)(getPaintings()[0]),
     };
 
+    expect(reply.status).toBe(200);
     expect(response).toEqual({getPaintingById: expected});
     expect(Painting.findById).toHaveBeenCalledTimes(1);
   });
@@ -168,6 +171,7 @@ describe('E2E: Testing failed Painting Queries from "/graphql"', () => {
       success: false,
     };
 
+    expect(reply.status).toBe(200);
     expect(response).toEqual({getPaintingById: expected});
     expect(Painting.findById).toHaveBeenCalledTimes(1);
   });
@@ -193,11 +197,35 @@ describe('E2E: Testing failed Painting Queries from "/graphql"', () => {
     const data = reply.body.data;
     const [error] = reply.body.errors;
 
+    expect(reply.status).toBe(200);
     expect(data).toStrictEqual({getPaintings: null});
     expect(error.extensions.code).toBe('INTERNAL_SERVER_ERROR');
     expect(error.message).toBe('connect ECONNREFUSED');
     expect(error.locations).toBeDefined();
     expect(error.path).toBeDefined();
+  });
+
+  it('should throw UNAUTHENTICATED code', async () => {
+    verifyJwtMock.mockReturnValueOnce(false);
+
+    const queryData = {
+      query: `#graphql
+      query GetPaintings {
+        getPaintings {
+          message
+        }
+      }`,
+    };
+
+    const reply = await request(server.listener)
+      .post('/graphql')
+      .send(queryData);
+
+    const [error] = reply.body.errors;
+    expect(reply.status).toBe(401);
+    expect(error.locations).toBeDefined();
+    expect(error.extensions.code).toBe('UNAUTHENTICATED');
+    expect(error.message).toMatch('jwt required');
   });
 });
 

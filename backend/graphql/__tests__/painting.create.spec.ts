@@ -73,6 +73,7 @@ describe('E2E: Testing successful "createPainting" mutation from "/graphql"', ()
       result: filterProps<IPainting>(keys)(expectedPainting),
     };
 
+    expect(reply.status).toBe(200);
     expect(response).toEqual({createPainting: expected});
     expect(Painting.prototype.save).toHaveBeenCalledTimes(1);
   });
@@ -100,11 +101,43 @@ describe('E2E: Testing failed "createPainting" mutation from "/graphql"', () => 
       .send(queryData);
 
     const [error] = reply.body.errors;
+    expect(reply.status).toBe(200);
     expect(error.extensions.code).toBe('BAD_USER_INPUT');
     expect(error.locations).toBeDefined();
     expect(error.message).toMatch(
       /Field "\w+" of required type "String!" was not provided/,
     );
+  });
+
+  it('should throw UNAUTHENTICATED code', async () => {
+    verifyJwtMock.mockReturnValueOnce(false);
+
+    const queryData = {
+      query: `#graphql
+      mutation CreatePainting($paintingInput: CreatePaintingInput!) {
+        createPainting(paintingInput: $paintingInput) {
+          message
+        }
+      }`,
+      variables: {
+        paintingInput: {
+          name: '  The Starry Night ',
+          author: 'Vincent van Gogh ',
+          year: '  1889 ',
+          url: 'https://media.timeout.com/images/103166739/750/562/image.webp',
+        },
+      },
+    };
+
+    const reply = await request(server.listener)
+      .post('/graphql')
+      .send(queryData);
+
+    const [error] = reply.body.errors;
+    expect(reply.status).toBe(401);
+    expect(error.locations).toBeDefined();
+    expect(error.extensions.code).toBe('UNAUTHENTICATED');
+    expect(error.message).toMatch('jwt required');
   });
 });
 
