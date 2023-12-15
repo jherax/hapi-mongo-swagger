@@ -197,7 +197,7 @@ describe('E2E: Testing failed Painting Queries from "/graphql"', () => {
     const data = reply.body.data;
     const [error] = reply.body.errors;
 
-    expect(reply.status).toBe(200);
+    expect(reply.status).toBe(500);
     expect(data).toStrictEqual({getPaintings: null});
     expect(error.extensions.code).toBe('INTERNAL_SERVER_ERROR');
     expect(error.message).toBe('connect ECONNREFUSED');

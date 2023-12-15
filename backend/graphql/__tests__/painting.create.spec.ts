@@ -101,7 +101,7 @@ describe('E2E: Testing failed "createPainting" mutation from "/graphql"', () => 
       .send(queryData);
 
     const [error] = reply.body.errors;
-    expect(reply.status).toBe(200);
+    expect(reply.status).toBe(400);
     expect(error.extensions.code).toBe('BAD_USER_INPUT');
     expect(error.locations).toBeDefined();
     expect(error.message).toMatch(

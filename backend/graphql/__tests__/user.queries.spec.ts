@@ -58,6 +58,7 @@ describe('E2E: Testing successful User Queries from "/graphql"', () => {
       result: getUsers().map(filterProps(keys)),
     };
 
+    expect(reply.status).toBe(200);
     expect(response).toEqual({getUsers: expected});
     expect(User.find).toHaveBeenCalledTimes(1);
   });
@@ -94,6 +95,7 @@ describe('E2E: Testing successful User Queries from "/graphql"', () => {
       result: users.map(filterProps(keys)),
     };
 
+    expect(reply.status).toBe(200);
     expect(response).toEqual({getUsers: expected});
     expect(User.find).toHaveBeenCalledTimes(1);
   });
@@ -130,8 +132,40 @@ describe('E2E: Testing successful User Queries from "/graphql"', () => {
       result: filterProps<IUser>(keys)(getUsers()[0]),
     };
 
+    expect(reply.status).toBe(200);
     expect(response).toEqual({getUserById: expected});
     expect(User.findById).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('E2E: Testing failed User Queries from "/graphql"', () => {
+  it('should throw INTERNAL_SERVER_ERROR error', async () => {
+    const queryData = {
+      query: `#graphql
+    query GetUsers {
+      getUsers {
+        message
+      }
+    }`,
+    };
+
+    jest.spyOn(User, 'find').mockImplementation(() => {
+      throw new Error('connect ECONNREFUSED');
+    });
+
+    const reply = await request(server.listener)
+      .post('/graphql')
+      .send(queryData);
+
+    const data = reply.body.data;
+    const [error] = reply.body.errors;
+
+    expect(reply.status).toBe(500);
+    expect(data).toStrictEqual({getUsers: null});
+    expect(error.extensions.code).toBe('INTERNAL_SERVER_ERROR');
+    expect(error.message).toBe('connect ECONNREFUSED');
+    expect(error.locations).toBeDefined();
+    expect(error.path).toBeDefined();
   });
 });
 

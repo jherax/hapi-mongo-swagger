@@ -9,6 +9,8 @@ import typeDefs from '../graphql/schemas';
  * @see https://www.apollographql.com/docs/apollo-server/testing/mocking
  */
 jest.mock('../server/apollo', () => {
+  const {setHttpPlugin} = jest.requireActual('../server/apollo');
+
   const apolloServer = new ApolloServer({
     // addMocksToSchema accepts a schema instance and provides
     // mocked data for each field in the schema
@@ -16,6 +18,7 @@ jest.mock('../server/apollo', () => {
       schema: makeExecutableSchema({typeDefs, resolvers}),
       preserveResolvers: true,
     }),
+    plugins: [setHttpPlugin],
   });
 
   return jest.fn(async () => {

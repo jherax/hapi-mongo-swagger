@@ -43,7 +43,7 @@ const messages: Record<string, ServerMessage> = {
     message: 'Bad request. Please try again with valid parameters',
     success: false,
   },
-  AUTHENTICATION_FAILED: {
+  UNAUTHENTICATED: {
     statusCode: 401,
     message: 'Authentication failed. Please login with valid credentials.',
     success: false,

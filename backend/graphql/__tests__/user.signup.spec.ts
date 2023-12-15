@@ -70,6 +70,7 @@ describe('E2E: Testing successful "signup" mutation from "/graphql"', () => {
       },
     };
 
+    expect(reply.status).toBe(200);
     expect(response).toEqual({signup: expected});
     expect(User.prototype.save).toHaveBeenCalledTimes(1);
   });
@@ -106,6 +107,7 @@ describe('E2E: Testing failed "signup" mutation from "/graphql"', () => {
       success: false,
     };
 
+    expect(reply.status).toBe(200);
     expect(response).toEqual({signup: expected});
     expect(User.findOne).toHaveBeenCalledWith({email});
     expect(User.prototype.save).not.toHaveBeenCalled();
@@ -127,6 +129,7 @@ describe('E2E: Testing failed "signup" mutation from "/graphql"', () => {
       .send(queryData);
 
     const [error] = reply.body.errors;
+    expect(reply.status).toBe(400);
     expect(error.extensions.code).toBe('BAD_USER_INPUT');
     expect(error.locations).toBeDefined();
     expect(error.message).toMatch(

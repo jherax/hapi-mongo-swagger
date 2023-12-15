@@ -68,6 +68,7 @@ describe('E2E: Testing successful "login" mutation from "/graphql"', () => {
       },
     };
 
+    expect(reply.status).toBe(200);
     expect(response).toEqual({login: expected});
     expect(User.findOne).toHaveBeenCalledTimes(1);
   });
@@ -102,6 +103,7 @@ describe('E2E: Testing failed "login" mutation from "/graphql"', () => {
       success: false,
     };
 
+    expect(reply.status).toBe(200);
     expect(response).toEqual({login: expected});
     expect(User.findOne).toHaveBeenCalledTimes(1);
   });
@@ -127,6 +129,7 @@ describe('E2E: Testing failed "login" mutation from "/graphql"', () => {
       .send(queryData);
 
     const [error] = reply.body.errors;
+    expect(reply.status).toBe(400);
     expect(error.extensions.code).toBe('BAD_USER_INPUT');
     expect(error.locations).toBeDefined();
     expect(error.message).toMatch(
