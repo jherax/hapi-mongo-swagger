@@ -16,7 +16,7 @@ const paintingResolver = {
       {id},
       contextShared,
     ): Promise<PaintingResponse> => {
-      if (!verifyJwt(contextShared.token)) {
+      if (!verifyJwt(contextShared.token).authenticated) {
         throw graphQLErrors.unauthenticated();
       }
 
@@ -35,7 +35,7 @@ const paintingResolver = {
       {limit, page},
       contextShared,
     ): Promise<PaintingResponse> => {
-      if (!verifyJwt(contextShared.token)) {
+      if (!verifyJwt(contextShared.token).authenticated) {
         throw graphQLErrors.unauthenticated();
       }
 
@@ -63,7 +63,7 @@ const paintingResolver = {
       {paintingInput},
       contextShared,
     ): Promise<PaintingResponse> => {
-      if (!verifyJwt(contextShared.token)) {
+      if (!verifyJwt(contextShared.token).authenticated) {
         throw graphQLErrors.unauthenticated();
       }
 
@@ -83,7 +83,7 @@ const paintingResolver = {
       {id},
       contextShared,
     ): Promise<PaintingResponse> => {
-      if (!verifyJwt(contextShared.token)) {
+      if (!verifyJwt(contextShared.token).authenticated) {
         throw graphQLErrors.unauthenticated();
       }
 
@@ -106,7 +106,7 @@ const paintingResolver = {
       {id, paintingInput},
       contextShared,
     ): Promise<PaintingResponse> => {
-      if (!verifyJwt(contextShared.token)) {
+      if (!verifyJwt(contextShared.token).authenticated) {
         throw graphQLErrors.unauthenticated();
       }
 

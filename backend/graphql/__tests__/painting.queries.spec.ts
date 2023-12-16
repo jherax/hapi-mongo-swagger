@@ -23,7 +23,7 @@ beforeAll(async () => {
 });
 
 beforeEach(() => {
-  verifyJwtMock.mockReturnValue(true);
+  verifyJwtMock.mockReturnValue({authenticated: true});
   setupMongooseMocks();
 });
 
@@ -206,7 +206,7 @@ describe('E2E: Testing failed Painting Queries from "/graphql"', () => {
   });
 
   it('should throw UNAUTHENTICATED code', async () => {
-    verifyJwtMock.mockReturnValueOnce(false);
+    verifyJwtMock.mockReturnValueOnce({authenticated: false});
 
     const queryData = {
       query: `#graphql

@@ -13,13 +13,13 @@ describe('Testing verifyJwt()', () => {
     };
     const token = createToken(user);
     const result = verifyJwt(token);
-    expect(result).toBe(true);
+    expect(result.authenticated).toBe(true);
   });
 
   it('should return false when no token is passed as argument', () => {
-    expect(verifyJwt('')).toBe(false);
-    expect(verifyJwt(null)).toBe(false);
-    expect(verifyJwt(undefined)).toBe(false);
+    expect(verifyJwt('').authenticated).toBe(false);
+    expect(verifyJwt(null).authenticated).toBe(false);
+    expect(verifyJwt(undefined).authenticated).toBe(false);
   });
 
   it('should throw error when an expired token is passed as argument', () => {

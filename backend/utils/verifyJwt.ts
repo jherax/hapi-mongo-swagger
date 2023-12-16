@@ -3,13 +3,13 @@ import jwt from 'jsonwebtoken';
 import config from '../server/config';
 import graphQLErrors from './graphQLErrors';
 
-export default function verifyJwt(token: string): boolean {
+export default function verifyJwt(token: string): IUserJwt {
   if (!token) {
-    return false;
+    return {authenticated: false};
   }
   try {
     const user = jwt.verify(token, config.app.jwtPrivateKey) as IUserJwt;
-    return !!user;
+    return {authenticated: true, ...user};
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
       throw graphQLErrors.expired();

@@ -13,6 +13,7 @@ declare global {
   type UserModel = Model<IUser, Record<string, never>>;
 
   interface IUserJwt {
+    authenticated: boolean;
     userId?: string;
     email?: string;
     iat?: number;

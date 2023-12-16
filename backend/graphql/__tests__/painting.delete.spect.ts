@@ -22,7 +22,7 @@ beforeAll(async () => {
 });
 
 beforeEach(() => {
-  verifyJwtMock.mockReturnValue(true);
+  verifyJwtMock.mockReturnValue({authenticated: true});
   setupMongooseMocks();
 });
 
