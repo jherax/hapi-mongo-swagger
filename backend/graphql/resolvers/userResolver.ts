@@ -57,6 +57,7 @@ const userResolver = {
     ): Promise<UserResponse> => {
       const {email, password, fullname} = trimObjectProps(input);
       const response = createSuccessResponse('New user created');
+      // TODO: validate email and encrypt password (bcryptjs)
       const emailAlreadyExist = await User.findOne({email});
       if (emailAlreadyExist) {
         response.success = false;
@@ -89,6 +90,7 @@ const userResolver = {
     ): Promise<UserResponse> => {
       const response = createSuccessResponse('Successfully logged in');
       const {email, password} = trimObjectProps(input);
+      // TODO: validate email and decrypt password (bcryptjs)
       const user = await User.findOne({
         $and: [{email}, {password}],
       });

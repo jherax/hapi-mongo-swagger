@@ -3,6 +3,12 @@ import type {Request, ResponseToolkit} from '@hapi/hapi';
 import messages from '../server/messages';
 import {sendError} from '../server/responses';
 
+/**
+ * Optionally, you can use Joi:
+ * A powerful schema description language and data validator.
+ * @see https://www.npmjs.com/package/joi
+ */
+
 export default function paintingValidator(
   request: Request,
   reply: ResponseToolkit,
