@@ -6,6 +6,8 @@ import {
 } from '../handlers/paintingHandler';
 import paintingValidator from '../handlers/paintingValidator';
 
+// TODO: Add Joi for schema and route validation
+// https://github.com/z0mt3c/hapi-swaggered#example
 const v1 = '/api/v1';
 
 const pluginsOptions = {
@@ -17,6 +19,9 @@ const pluginsOptions = {
 /**
  * Handle cookies via `server.state()`
  * @see https://hapi.dev/tutorials/cookies/
+ *
+ * Route options:
+ * @see https://hapi.dev/api/?v=21.3.2#route-options
  */
 
 function paintingRoutes(): ServerRoute<ReqRefDefaults>[] {
@@ -27,6 +32,9 @@ function paintingRoutes(): ServerRoute<ReqRefDefaults>[] {
       options: {
         handler: getAllPaintingsHandler,
         plugins: pluginsOptions,
+        description: 'GET: List all paintings',
+        tags: ['api', 'paintings'],
+        auth: false,
       },
     },
     {
@@ -35,6 +43,9 @@ function paintingRoutes(): ServerRoute<ReqRefDefaults>[] {
       options: {
         handler: getAllPaintingsHandler,
         plugins: pluginsOptions,
+        description: 'GET: List all paintings by /page',
+        tags: ['api', 'paintings'],
+        auth: false,
       },
     },
     {
@@ -43,6 +54,9 @@ function paintingRoutes(): ServerRoute<ReqRefDefaults>[] {
       options: {
         pre: [{assign: 'validated', method: paintingValidator}],
         handler: savePaintingHandler,
+        description: 'POST: Creates a new painting',
+        tags: ['api', 'paintings'],
+        auth: false,
       },
     },
   ];

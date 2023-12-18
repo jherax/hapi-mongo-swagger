@@ -67,6 +67,7 @@ const paintingResolver = {
         throw graphQLErrors.unauthenticated();
       }
 
+      // TODO: validate url
       const {name, author, year, url} = params.paintingInput;
       const painting = new Painting(trimObjectProps({name, author, year, url}));
       const response = createSuccessResponse('New Painting added');
@@ -116,6 +117,7 @@ const paintingResolver = {
         response.success = false;
         response.message = `Painting with id ${id} does not exist`;
       } else {
+        // TODO: validate url
         const {name, author, year, url} = paintingInput as Partial<IPainting>;
         const edited = trimObjectProps({
           name: name ?? painting.name,
