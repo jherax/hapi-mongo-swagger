@@ -1,4 +1,4 @@
-import type {ApolloServer, BaseContext} from '@apollo/server';
+import type {ApolloServer} from '@apollo/server';
 import {Server} from '@hapi/hapi';
 import Qs from 'qs';
 
@@ -22,7 +22,9 @@ let server: Server;
  * @see https://hapi.dev/tutorials/testing
  */
 
-export const initServer = async (apolloServer: ApolloServer<BaseContext>) => {
+export const initServer = async (
+  apolloServer: ApolloServer<ApolloServerContext>,
+) => {
   /**
    * @see https://akhromieiev.com/tutorials/using-cors-in-hapi/
    */

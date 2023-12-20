@@ -94,7 +94,9 @@ paths are enabled to run an
 [Apollo Sandbox](https://www.apollographql.com/docs/graphos/explorer/sandbox/)
 environment where we can now execute GraphQL our queries on our own server.
 
-Default path: [localhost:4000/sandbox](http://localhost:4000/graphql)
+- Default path: [localhost:4000/sandbox](http://localhost:4000/graphql)
+- Online Sandbox:
+  [studio.apollographql.com/sandbox](https://studio.apollographql.com/sandbox/)
 
 ⚠️ Running the local server requires docker, if docker has not been configured,
 then follow next steps: [docker](#docker) 👇

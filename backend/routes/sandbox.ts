@@ -5,9 +5,10 @@ import type {
   ServerRoute,
 } from '@hapi/hapi';
 
+import {isProd} from '../server/config';
+
 function sandboxRoutes(): ServerRoute<ReqRefDefaults>[] {
-  const env = process.env.NODE_ENV;
-  if (env === 'prod') {
+  if (isProd) {
     return [];
   }
   return [

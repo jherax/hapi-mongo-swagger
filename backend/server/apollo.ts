@@ -1,8 +1,9 @@
-import {ApolloServer, type BaseContext} from '@apollo/server';
+import {ApolloServer} from '@apollo/server';
 import {ApolloServerErrorCode} from '@apollo/server/errors';
 
 import resolvers from '../graphql/resolvers';
 import typeDefs from '../graphql/schemas';
+import {isProd} from './config';
 import messages from './messages';
 
 /**
@@ -37,11 +38,11 @@ export const setHttpPlugin = {
  * @see https://www.apollographql.com/docs/apollo-server/getting-started/
  */
 export default async function initApollo() {
-  const apolloServer = new ApolloServer<BaseContext>({
+  const apolloServer = new ApolloServer<ApolloServerContext>({
     typeDefs,
     resolvers,
-    introspection: true,
-    includeStacktraceInErrorResponses: true,
+    introspection: !isProd,
+    includeStacktraceInErrorResponses: !isProd,
     plugins: [setHttpPlugin],
     /** @see https://www.apollographql.com/docs/apollo-server/data/errors/#for-client-responses */
     // formatError: (formattedError, error) => { /* use logger and return formattedError */ }

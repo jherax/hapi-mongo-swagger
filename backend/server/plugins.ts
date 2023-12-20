@@ -1,4 +1,4 @@
-import type {ApolloServer, BaseContext} from '@apollo/server';
+import type {ApolloServer} from '@apollo/server';
 import hapiApolloPlugin from '@as-integrations/hapi';
 import Boom from '@hapi/boom';
 import type {Request, ResponseToolkit, Server} from '@hapi/hapi';
@@ -10,7 +10,7 @@ import config from './config';
 
 export default function registerPlugins(
   hapiServer: Server,
-  apolloServer: ApolloServer<BaseContext>,
+  apolloServer: ApolloServer<ApolloServerContext>,
 ) {
   return hapiServer.register([
     inertPlugin,
@@ -45,11 +45,9 @@ export default function registerPlugins(
         context: async ({request}) => {
           // we remove the word Bearer that specifies the strategy used,
           // and then pass the token to the context object in the resolvers.
-          const auth = request.headers.authorization ?? '';
-          const token = auth.replace('Bearer ', '');
-          return {
-            token,
-          };
+          const auth: string = request.headers.authorization ?? '';
+          const token: string = auth.replace('Bearer ', '');
+          return {token} as ApolloServerContext;
         },
       },
     },

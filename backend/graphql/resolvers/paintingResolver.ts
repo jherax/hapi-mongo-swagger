@@ -13,8 +13,8 @@ const paintingResolver = {
   Query: {
     getPaintingById: async (
       parent,
-      {id},
-      contextShared,
+      {id}: {id: string},
+      contextShared: ApolloServerContext,
     ): Promise<PaintingResponse> => {
       if (!verifyJwt(contextShared.token).authenticated) {
         throw graphQLErrors.unauthenticated();
@@ -32,15 +32,15 @@ const paintingResolver = {
 
     getPaintings: async (
       parent,
-      {limit, page},
-      contextShared,
+      params: {limit: number; page: number},
+      contextShared: ApolloServerContext,
     ): Promise<PaintingResponse> => {
       if (!verifyJwt(contextShared.token).authenticated) {
         throw graphQLErrors.unauthenticated();
       }
 
-      page = +(page || 1);
-      limit = +(limit || 10);
+      const page = +(params.page || 1);
+      const limit = +(params.limit || 10);
       const startIndex = (page - 1) * limit;
 
       const allPaintings = await Painting.find()
@@ -60,14 +60,14 @@ const paintingResolver = {
   Mutation: {
     createPainting: async (
       parent,
-      {paintingInput},
-      contextShared,
+      params: {paintingInput: IPainting},
+      contextShared: ApolloServerContext,
     ): Promise<PaintingResponse> => {
       if (!verifyJwt(contextShared.token).authenticated) {
         throw graphQLErrors.unauthenticated();
       }
 
-      const {name, author, year, url} = paintingInput as IPainting;
+      const {name, author, year, url} = params.paintingInput;
       const painting = new Painting(trimObjectProps({name, author, year, url}));
       const response = createSuccessResponse('New Painting added');
       response.result = await painting.save();
@@ -80,8 +80,8 @@ const paintingResolver = {
 
     deletePainting: async (
       parent,
-      {id},
-      contextShared,
+      {id}: {id: string},
+      contextShared: ApolloServerContext,
     ): Promise<PaintingResponse> => {
       if (!verifyJwt(contextShared.token).authenticated) {
         throw graphQLErrors.unauthenticated();
@@ -104,7 +104,7 @@ const paintingResolver = {
     editPainting: async (
       parent,
       {id, paintingInput},
-      contextShared,
+      contextShared: ApolloServerContext,
     ): Promise<PaintingResponse> => {
       if (!verifyJwt(contextShared.token).authenticated) {
         throw graphQLErrors.unauthenticated();

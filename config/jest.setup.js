@@ -27,21 +27,26 @@ const {makeExecutableSchema} = require('@graphql-tools/schema');
 
 jest.mock('../backend/server/config', () => {
   return {
-    app: {
-      host: 'localhost',
-      port: 8888,
-      public: path.join(process.cwd(), '/backend/public'),
-      logLevel: 'info',
-      maxRequests: 5,
-      jwtPrivateKey: 'my_secret_word',
-      jwtExpiryTime: '5m',
-    },
-    db: {
-      host: 'localhost',
-      port: 9999,
-      database: 'test-db',
-      username: 'contoso',
-      password: 'costoso',
+    __esModule: true,
+    isProd: false,
+    default: {
+      env: 'test',
+      app: {
+        host: 'localhost',
+        port: 8888,
+        public: path.join(process.cwd(), '/backend/public'),
+        logLevel: 'info',
+        maxRequests: 5,
+        jwtPrivateKey: 'my_secret_word',
+        jwtExpiryTime: '5m',
+      },
+      db: {
+        host: 'localhost',
+        port: 9999,
+        database: 'test-db',
+        username: 'contoso',
+        password: 'costoso',
+      },
     },
   };
 });

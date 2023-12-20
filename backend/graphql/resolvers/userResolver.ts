@@ -11,7 +11,11 @@ export type UserResponse = {
 
 const userResolver = {
   Query: {
-    getUserById: async (parent, {id}, contextShared): Promise<UserResponse> => {
+    getUserById: async (
+      parent,
+      {id}: {id: string},
+      contextShared: ApolloServerContext,
+    ): Promise<UserResponse> => {
       const response = createSuccessResponse('User found');
       const user = await User.findById(id);
       if (!user) {
@@ -24,11 +28,11 @@ const userResolver = {
 
     getUsers: async (
       parent,
-      {limit, page},
-      contextValue,
+      params: {limit: number; page: number},
+      contextValue: ApolloServerContext,
     ): Promise<UserResponse> => {
-      page = +(page || 1);
-      limit = +(limit || 10);
+      const page = +(params.page || 1);
+      const limit = +(params.limit || 10);
       const startIndex = (page - 1) * limit;
 
       const allUsers = await User.find()
@@ -46,8 +50,12 @@ const userResolver = {
   },
 
   Mutation: {
-    signup: async (parent, {input}, contextShared): Promise<UserResponse> => {
-      const {email, password, fullname} = trimObjectProps<IUser>(input);
+    signup: async (
+      parent,
+      {input}: {input: IUser},
+      contextShared: ApolloServerContext,
+    ): Promise<UserResponse> => {
+      const {email, password, fullname} = trimObjectProps(input);
       const response = createSuccessResponse('New user created');
       const emailAlreadyExist = await User.findOne({email});
       if (emailAlreadyExist) {
@@ -74,9 +82,13 @@ const userResolver = {
       return response;
     },
 
-    login: async (parent, {input}, contextShared): Promise<UserResponse> => {
+    login: async (
+      parent,
+      {input}: {input: IUser},
+      contextShared: ApolloServerContext,
+    ): Promise<UserResponse> => {
       const response = createSuccessResponse('Successfully logged in');
-      const {email, password} = trimObjectProps<IUser>(input);
+      const {email, password} = trimObjectProps(input);
       const user = await User.findOne({
         $and: [{email}, {password}],
       });

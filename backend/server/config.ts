@@ -4,6 +4,7 @@ import path from 'path';
 env.config();
 
 const config = {
+  env: process.env.NODE_ENV || 'dev',
   app: {
     host: process.env.APP_HOST,
     port: process.env.APP_PORT,
@@ -21,5 +22,7 @@ const config = {
     password: process.env.DB_INIT_PASSWORD,
   },
 };
+
+export const isProd = ['prod', 'production'].includes(config.env);
 
 export default config;

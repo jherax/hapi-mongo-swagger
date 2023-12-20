@@ -1,7 +1,7 @@
 import {type Model} from 'mongoose';
 
 declare global {
-  declare interface IPainting {
+  interface IPainting {
     name: string;
     author: string;
     year: string;
@@ -11,7 +11,7 @@ declare global {
     _id?: string;
   }
 
-  declare type PaintingModel = Model<IPainting, Record<string, never>>;
+  type PaintingModel = Model<IPainting, Record<string, never>>;
 }
 
 export {};
