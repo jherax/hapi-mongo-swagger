@@ -15,5 +15,15 @@ if [ ! -z "$files" ]; then
   git add $files
 fi
 
+# Markdown
+files=$(git diff --name-only --cached --diff-filter=ACMR "*.md")
+if [ ! -z "$files" ]; then
+  npm run gendocs
+  htmlfiles=$(git diff --name-only)
+  if [ ! -z "$htmlfiles" ]; then
+    git diff --name-only | xargs git add
+  fi
+fi
+
 # Jest
 npx lint-staged

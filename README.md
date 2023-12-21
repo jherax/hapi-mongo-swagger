@@ -15,7 +15,7 @@ Hapi enables us to build our API in a very rapid manner.
 Make sure to set the env variables. For local environment you can create a
 `.env` file with the following environment variables:
 
-```properties
+```bash
 APP_HOST=localhost
 APP_PORT=4000
 # dev | prod | qa
@@ -30,9 +30,9 @@ Also you may change the log level by setting the env variable `LOG_LEVEL` to the
 available values `error | warn | info | debug`. By default `LOG_LEVEL` is set to
 `info`.
 
-This application uses [winston](https://github.com/winstonjs/winston) as logging
-library with support for multiple transports. A transport is essentially a
-storage device for your logs. Default transports are `Console` and
+💡 This application uses [winston](https://github.com/winstonjs/winston) as
+logging library with support for multiple transports. A transport is essentially
+a storage device for your logs. Default transports are `Console` and
 `DailyRotateFile`
 
 ESLint disables the use of `console.*` methods, use the following methods
@@ -60,13 +60,13 @@ Just run the command
 
 ```bash
 npm run mongod
-npm run dev-server
+npm run dev:server
 ```
 
 ## Apollo GraphQL
 
-The path that resolves Apollo queries is: `/graphql`.\
-The following queries require the `Authorization` header with a valid JWT token:
+The path that resolves Apollo queries is: `/graphql`. The following queries
+require the `Authorization` header with a valid JWT token:
 
 - `getPaintings`
 - `getPaintingById`
@@ -84,7 +84,7 @@ variable which points to the environment `JWT_AUTH_TOKEN`, so you will need to
 create that variable in your `.env` file in order to get those `.http` files
 working properly.
 
-```properties
+```bash
 # .env
 JWT_AUTH_TOKEN=some_valid_token_generated_by_login
 ```
@@ -98,15 +98,15 @@ environment where we can now execute GraphQL our queries on our own server.
 - Online Sandbox:
   [studio.apollographql.com/sandbox](https://studio.apollographql.com/sandbox/)
 
-⚠️ Running the local server requires docker, if docker has not been configured,
-then follow next steps: [docker](#docker) 👇
+⚠️ _Running the local server requires docker, if docker has not been configured,
+then follow next steps: [docker](#docker)_ 👇
 
 ## docker
 
 MongoDB is loaded as a docker container, sou you need to make sure to create a
 `.env` file with the following environment variables:
 
-```properties
+```bash
 DB_ROOT_USERNAME=root
 DB_ROOT_PASSWORD=root
 DB_INIT_USERNAME=appuser
@@ -153,27 +153,22 @@ root@mongodb:/#
 
 ## Standard-version
 
-`standard-version` is a utility for versioning using semver and CHANGELOG
-generation powered by Conventional Commits.
-
-> `standard-version` is deprecated. If you're a GitHub user, I recommend
-> [`release-please`](https://github.com/googleapis/release-please) as an
-> alternative.
-
-`standard-version` needs to have a starting point to append the CHANGELOG and
-other versions to. Simply run:
+`standard-version` is a utility for versioning using **semver** and CHANGELOG
+generation powered by Conventional Commits. You need to have a starting point to
+append the CHANGELOG and other versions to. The first time simply run:
 
 ```bash
 npm run release -- --first-release
 ```
 
-### Usage
-
-For a new release, just run
+Then, for a new release, just run:
 
 ```bash
 npm run release
 ```
+
+⚠️ _**standard-version** is deprecated. It is recommended to use an alternative
+like [`release-please`](https://github.com/googleapis/release-please)._
 
 For more details, please visit the Github site
 [standard-version](https://github.com/conventional-changelog/standard-version)
@@ -212,8 +207,6 @@ To add a hook:
 npx husky add .husky/pre-commit "eslint and prettier commands"
 npx husky add .husky/post-commit "git update-index -g"
 npx husky add .husky/commit-msg 'npx --no -- commitlint --edit ${1}'
-git add .husky/
-git commit -m "chore: Added git hooks with husky"
 ```
 
 See:
