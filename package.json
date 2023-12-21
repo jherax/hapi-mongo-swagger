@@ -24,7 +24,8 @@
     "build-prd": "NODE_ENV=prod node config/esbuild.js",
     "build-all": "run-s clean build-prd",
     "ts-config": "npm run build -- --showConfig",
-    "dev-server": "concurrently -k \"npm:build -- -w\" \"nodemon --dns-result-order=ipv4first --trace-warnings dist/index.js\"",
+    "dev:server": "concurrently -k \"npm:build -- -w\" \"nodemon --dns-result-order=ipv4first --trace-warnings dist/index.js\"",
+    "gendocs": "node scripts/md2html.js",
     "lint": "eslint . --ext .ts",
     "test": "jest -c=config/jest.config.js --detectOpenHandles",
     "test:staged": "jest -c=config/jest.config.js --bail --findRelatedTests",
@@ -74,12 +75,13 @@
     "npm-run-all": "~4.1.5",
     "prettier": "~3.1.0",
     "rimraf": "~5.0.5",
+    "showdown": "^2.1.0",
     "standard-version": "~9.5.0",
     "supertest": "~6.3.3",
     "ts-node": "~10.9.1"
   },
   "lint-staged": {
-    "{backend,scripts}/**/*.{js,jsx,ts,tsx}": [
+    "{backend,scripts}/**/*.ts": [
       "npm run test:staged"
     ]
   }
