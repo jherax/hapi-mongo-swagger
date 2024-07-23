@@ -1,14 +1,15 @@
-# GraphQL API based on Hapi with Swagger powered by MongoDB
+# Hapi + Swagger, GraphQL + JWT, MongoDB + Winston
 
-[GraphQL](https://graphql.org/) API based on Nodejs with
-[Swagger](https://swagger.io/) documentation powered by
-[MongoDB](https://www.mongodb.com/)
+[Hapi](https://hapi.dev/tutorials/) Node server with
+[Swagger](https://github.com/hapi-swagger/hapi-swagger),
+[MongoDB](https://www.mongodb.com/) database, and
+[GraphQL](https://graphql.org/) API with
+[Winston](https://github.com/winstonjs/winston) logs.
 
-Instead of going with Express, we are going with Hapi. In a nutshell, Hapi is a
-Node framework. The reason why I chose Hapi is rather simple — simplicity and
-flexibility over the boilerplate code.
+This backend application consists of 2 APIs.
 
-Hapi enables us to build our API in a very rapid manner.
+1. GraphQL API: JWT + Mongoose (Schemas: Painting, User)
+1. REST API: Express + Mongoose + Swagger (Controllers: Painting, HealthCheck)
 
 ## Environment
 
@@ -30,10 +31,10 @@ Also you may change the log level by setting the env variable `LOG_LEVEL` to the
 available values `error | warn | info | debug`. By default `LOG_LEVEL` is set to
 `info`.
 
-💡 This application uses [winston](https://github.com/winstonjs/winston) as
-logging library with support for multiple transports. A transport is essentially
-a storage device for your logs. Default transports are `Console` and
-`DailyRotateFile`
+> 💡 This application uses [winston](https://github.com/winstonjs/winston) as
+> logging library with support for multiple transports. A transport is
+> essentially a storage device for your logs. Default transports are `Console`
+> and `DailyRotateFile`
 
 ESLint disables the use of `console.*` methods, use the following methods
 instead:
@@ -47,7 +48,7 @@ logger.debug('Message to the logger');
 
 ## Prepare the app
 
-After cloning the repository, run the following commands:
+After cloning the repository, run the following commands only once:
 
 ```bash
 npm install
@@ -62,6 +63,22 @@ Just run the command
 npm run mongod
 npm run dev:server
 ```
+
+## Swagger
+
+This project uses the
+[Hapi Swagger](https://github.com/hapi-swagger/hapi-swagger) plugin that
+generates API documentation following this approach: _Document your API while
+defining your routes_. It adds a page on your website with the path
+`/documentation`, where the full URL would be `localhost:4000/documentation`.
+Alternatively, you can use
+[hapi-swaggered-ui](https://github.com/z0mt3c/hapi-swaggered-ui) which follows
+the same approach, or if you want to create a custom documentation site, see
+[swagger-ui](https://github.com/swagger-api/swagger-ui).
+
+> 💡 [Joi](https://www.npmjs.com/package/joi) is recommended as a schema and
+> data validator for routes, and also works well together with «hapi-swaggered»
+> and «hapi-swagger».
 
 ## Apollo GraphQL
 
@@ -92,16 +109,16 @@ JWT_AUTH_TOKEN=some_valid_token_generated_by_login
 💡 When running in non-production environment, the `/graphql` and `/sandbox`
 paths are enabled to run an
 [Apollo Sandbox](https://www.apollographql.com/docs/graphos/explorer/sandbox/)
-environment where we can now execute GraphQL our queries on our own server.
+environment where we can now execute GraphQL queries on our own server.
 
 - Default path: [localhost:4000/sandbox](http://localhost:4000/graphql)
 - Online Sandbox:
   [studio.apollographql.com/sandbox](https://studio.apollographql.com/sandbox/)
 
-⚠️ _Running the local server requires docker, if docker has not been configured,
-then follow next steps: [docker](#docker)_ 👇
+> ⚠️ _Running the local server requires docker, if docker has not been
+> configured, then follow next steps: [docker](#docker)_ 👇
 
-## docker
+## Docker
 
 MongoDB is loaded as a docker container, sou you need to make sure to create a
 `.env` file with the following environment variables:
@@ -143,12 +160,12 @@ web-based MongoDB admin interface, go to the browser and navigate to
 `http://localhost:3001/`, using credentials in the env variables
 `DB_INIT_USERNAME` and `DB_INIT_PASSWORD`
 
-If you want to opent the terminal to run commands on the container, just run the
+If you want to open the terminal to run commands on the container, just run the
 following command for the specific container:
 
 ```bash
 docker exec -it mongodb_6 bash
-root@mongodb:/#
+root@mongodb_host:/#
 ```
 
 ## Standard-version
@@ -167,8 +184,9 @@ Then, for a new release, just run:
 npm run release
 ```
 
-⚠️ _**standard-version** is deprecated. It is recommended to use an alternative
-like [`release-please`](https://github.com/googleapis/release-please)._
+> ⚠️ _**standard-version** is deprecated. It is recommended to use an
+> alternative like
+> [`release-please`](https://github.com/googleapis/release-please)._
 
 For more details, please visit the Github site
 [standard-version](https://github.com/conventional-changelog/standard-version)

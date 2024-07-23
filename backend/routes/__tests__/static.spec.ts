@@ -31,7 +31,7 @@ describe("E2E: Testing router's default paths", () => {
     expect(reply.statusCode).toEqual(200);
     expect(reply.type).toBe('text/html');
     expect(reply.text).toMatch(
-      'GraphQL API based on Hapi with Swagger powered by MongoDB',
+      'Hapi + Swagger, GraphQL + JWT, MongoDB + Winston',
     );
   });
 

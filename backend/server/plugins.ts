@@ -3,8 +3,11 @@ import hapiApolloPlugin from '@as-integrations/hapi';
 import Boom from '@hapi/boom';
 import type {Request, ResponseToolkit, Server} from '@hapi/hapi';
 import inertPlugin from '@hapi/inert';
+import visionPlugin from '@hapi/vision';
 import rateLimitPlugin from 'hapi-rate-limit';
+import HapiSwagger from 'hapi-swagger';
 
+import {version} from '../../package.json';
 import logger from '../utils/logger';
 import config from './config';
 
@@ -14,6 +17,16 @@ export default function registerPlugins(
 ) {
   return hapiServer.register([
     inertPlugin,
+    visionPlugin,
+    {
+      plugin: HapiSwagger,
+      options: {
+        info: {
+          title: 'Paintings API Documentation',
+          version,
+        },
+      },
+    },
     {
       /** @see https://github.com/wraithgar/hapi-rate-limit */
       plugin: rateLimitPlugin,
