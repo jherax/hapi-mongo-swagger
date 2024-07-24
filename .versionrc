@@ -7,12 +7,9 @@
     {"type": "docs", "section": "Documentation"},
     {"type": "feat", "section": "Features"},
     {"type": "fix", "section": "Bug Fixes"},
-    {"type": "perf", "section": "Improvements"},
     {"type": "refactor", "section": "Improvements"},
     {"type": "revert", "section": "Roll Back"},
-    {"type": "style", "section": "Styling"},
-    {"type": "test", "section": "Unit Tests"},
-    {"type": "experiment", "section": "A/B Testing"}
+    {"type": "test", "section": "Unit Tests"}
   ],
   "scripts": {
     "prerelease": "git fetch --tags"

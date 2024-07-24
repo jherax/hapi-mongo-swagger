@@ -19,9 +19,9 @@ fi
 files=$(git diff --name-only --cached --diff-filter=ACMR "*.md")
 if [ ! -z "$files" ]; then
   npm run gendocs
-  htmlfiles=$(git diff --name-only)
+  htmlfiles=$(git diff --name-only --diff-filter=ACMR "*.html")
   if [ ! -z "$htmlfiles" ]; then
-    git diff --name-only | xargs git add
+    git add $htmlfiles
   fi
 fi
 

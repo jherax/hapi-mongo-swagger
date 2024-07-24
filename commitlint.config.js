@@ -20,9 +20,7 @@ const type = [
   'fix',
   'refactor',
   'revert',
-  'style',
   'test',
-  'experiment',
 ];
 
 const scope = [];
