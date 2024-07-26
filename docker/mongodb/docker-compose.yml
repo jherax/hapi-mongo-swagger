@@ -7,14 +7,8 @@ services:
   mongodb:
     image: mongo:6.0.8-rc0
     container_name: mongodb_6
-    hostname: mongodb
-    volumes:
-      - ./.volumes/mongod.conf:/etc/mongod.conf
-      - ./.volumes/initdb.d/:/docker-entrypoint-initdb.d/
-      - ./.volumes/data/db/:/data/db/
-      - ./.volumes/data/log/:/var/log/mongodb/
-    networks:
-      - mongo-compose-network
+    hostname: mongodb_host
+    # restart: unless-stopped
     env_file:
       - .env
     environment:
@@ -27,16 +21,21 @@ services:
       # <Port exposed>:<mongodb port running in the container>
       - '${DB_PORT}:27017'
     command: ['-f', '/etc/mongod.conf']
+    volumes:
+      - ./.volumes/mongod.conf:/etc/mongod.conf
+      - ./.volumes/initdb.d/:/docker-entrypoint-initdb.d/
+      - ./.volumes/data/db/:/data/db/
+      - ./.volumes/data/log/:/var/log/mongodb/
+    networks:
+      - mongo-compose-network
+    # healthcheck:
 
   mongo-express:
     container_name: mongo-express
-    hostname: mongoexpress
     image: mongo-express
-    restart: always
+    # restart: unless-stopped
     depends_on:
       - mongodb
-    networks:
-      - mongo-compose-network
     env_file:
       - .env
     environment:
@@ -51,6 +50,8 @@ services:
       - '${ME_PORT}:8081'
     volumes:
       - ./.volumes/data/db/:/data/db/
+    networks:
+      - mongo-compose-network
 
 networks:
   mongo-compose-network:

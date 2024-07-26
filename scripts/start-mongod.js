@@ -1,16 +1,18 @@
 /* eslint-disable no-console */
-const execPromise = require('./exec-promise');
+const util = require('node:util');
+const exec = util.promisify(require('node:child_process').exec);
 
 const commands = [
   `cp .env docker/mongodb/.env`,
   `cd docker/mongodb`,
   `mkdir -p -m 777 .volumes/data/log`,
-  `docker compose up -d`,
+  `docker-compose up -d`,
 ];
 
-execPromise(commands.join(' && '))
+exec(commands.join(' && '))
   .then(response => {
-    console.info(`Docker compose up! ${response}`);
+    const msg = response.stderr || response.stdout;
+    console.info(['Docker compose up!', msg].join('\n'));
   })
   .catch(error => {
     console.info('ERROR -> ', error);
