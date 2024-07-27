@@ -1,22 +1,29 @@
+import '../../__mocks__/apollo';
+
 import type {Server} from '@hapi/hapi';
 import {agent as request} from 'supertest';
 
 import paintingsMock from '../../__mocks__/paintings.json';
 import Painting from '../../models/Painting';
-import {initServer} from '../../server';
+import {NodeServer} from '../../server';
 import initApollo from '../../server/apollo';
 import messages from '../../server/messages';
 
-let server: Server;
-const v1 = '/api/v1';
+const PRODUCTS_PATH = `/api/v1/paintings`;
 const {SUCCESSFUL, INTERNAL_SERVER_ERROR} = messages;
 
-describe(`E2E: Testing GET "${v1}/paintings" routes`, () => {
+describe(`E2E: Testing GET "${PRODUCTS_PATH}" routes`, () => {
+  jest.spyOn(NodeServer.prototype, 'start').mockImplementation(jest.fn());
   Painting.find = jest.fn();
 
+  let appInstance: NodeServer;
+  let server: Server;
+
   beforeAll(async () => {
-    const apolloServer = await initApollo();
-    server = await initServer(apolloServer);
+    const apollo = await initApollo();
+    appInstance = new NodeServer(apollo);
+    await appInstance.initialize();
+    server = appInstance.server;
   });
 
   beforeEach(() => {
@@ -29,7 +36,7 @@ describe(`E2E: Testing GET "${v1}/paintings" routes`, () => {
 
   it(`should respond with a list of Paintings`, async () => {
     mockPaintingFind(paintingsMock);
-    const reply = await request(server.listener).get(`${v1}/paintings`);
+    const reply = await request(server.listener).get(PRODUCTS_PATH);
     expect(reply.statusCode).toEqual(200);
     expect(reply.body.data).toHaveLength(4);
     expect(Painting.find).toHaveBeenCalledTimes(1);
@@ -37,7 +44,7 @@ describe(`E2E: Testing GET "${v1}/paintings" routes`, () => {
 
   it(`should respond with an empty list`, async () => {
     mockPaintingFind([]);
-    const reply = await request(server.listener).get(`${v1}/paintings`);
+    const reply = await request(server.listener).get(PRODUCTS_PATH);
     const response: ServerResponse = reply.body;
     expect(response).toStrictEqual({
       statusCode: 200,
@@ -60,7 +67,7 @@ describe(`E2E: Testing GET "${v1}/paintings" routes`, () => {
     const spyOnMethods = mockPaintingFind(mokedData);
 
     const reply = await request(server.listener).get(
-      `${v1}/paintings/${PAGE}/?limit=${LIMIT}`,
+      `${PRODUCTS_PATH}/${PAGE}/?limit=${LIMIT}`,
     );
 
     const data: IPainting[] = reply.body.data;
@@ -80,7 +87,7 @@ describe(`E2E: Testing GET "${v1}/paintings" routes`, () => {
       exec: jest.fn().mockRejectedValue(new Error('Database error')),
     } as never);
 
-    const reply = await request(server.listener).get(`${v1}/paintings`);
+    const reply = await request(server.listener).get(PRODUCTS_PATH);
     const response: ServerResponse = reply.body;
 
     expect(response.statusCode).toBe(500);

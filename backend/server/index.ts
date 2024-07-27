@@ -1,3 +1,4 @@
+/* eslint-disable curly */
 import type {ApolloServer} from '@apollo/server';
 import {Server} from '@hapi/hapi';
 import Qs from 'qs';
@@ -6,67 +7,76 @@ import connectDb from '../db/mongodb';
 import registerRoutes from '../routes';
 import logger from '../utils/logger';
 import config from './config';
+import events from './events';
 import registerPlugins from './plugins';
 
 const {host, port} = config.app;
-let server: Server;
 
 /**
- * Do not call, initServer() and startServer(). This will allow you to initialize and start
- * the server from different files. The initServer() function will initialize the
- * server (starts the caches, finalizes plugin registration) but does not start
- * the server. This is what you will use in your tests. The startServer() function
- * will actually start the server. This is what you will use in our main
- * entry-point for the server.
- *
  * @see https://hapi.dev/tutorials/testing
  */
+export class NodeServer {
+  private _apollo: ApolloServer<ApolloServerContext>;
+  private _server: Server;
+  private _started = false;
 
-export const initServer = async (
-  apolloServer: ApolloServer<ApolloServerContext>,
-) => {
-  /**
-   * @see https://akhromieiev.com/tutorials/using-cors-in-hapi/
-   */
-  const corsOptions = {
-    origin: ['*'], // an array of origins or 'ignore' ('Access-Control-Allow-Origin')
-    headers: ['Authorization'], // an array of strings ('Access-Control-Allow-Headers')
-    exposedHeaders: ['Accept'], // an array of exposed headers ('Access-Control-Expose-Headers')
-    maxAge: 60, // number of seconds. ('Access-Control-Max-Age')
-    credentials: true, // boolean, allow user credentials. ('Access-Control-Allow-Credentials')
-  };
+  constructor(apolloServer: ApolloServer<ApolloServerContext>) {
+    this._apollo = apolloServer;
 
-  /**
-   * How to run multiple servers:
-   * @see https://futurestud.io/tutorials/hapi-how-to-run-separate-frontend-and-backend-servers-within-one-project
-   */
-  server = new Server({
-    host,
-    port,
-    routes: {
-      cors: corsOptions,
-      files: {
-        relativeTo: config.app.public,
+    /**
+     * @see https://akhromieiev.com/tutorials/using-cors-in-hapi/
+     */
+    const corsOptions = {
+      origin: ['*'], // an array of origins or 'ignore' ('Access-Control-Allow-Origin')
+      headers: ['Authorization'], // an array of strings ('Access-Control-Allow-Headers')
+      exposedHeaders: ['Accept'], // an array of exposed headers ('Access-Control-Expose-Headers')
+      maxAge: 60, // number of seconds. ('Access-Control-Max-Age')
+      credentials: true, // boolean, allow user credentials. ('Access-Control-Allow-Credentials')
+    };
+
+    /**
+     * How to run multiple servers:
+     * @see https://futurestud.io/tutorials/hapi-how-to-run-separate-frontend-and-backend-servers-within-one-project
+     */
+    this._server = new Server({
+      host,
+      port,
+      routes: {
+        cors: corsOptions,
+        files: {relativeTo: config.app.public},
       },
-    },
-    router: {stripTrailingSlash: true},
-    query: {parser: query => Qs.parse(query)},
-  });
+      router: {stripTrailingSlash: true},
+      query: {parser: query => Qs.parse(query)},
+    });
+  }
 
-  await registerPlugins(server, apolloServer);
-  registerRoutes(server);
-  await server.initialize();
-  return server;
-};
+  private async config() {
+    await registerPlugins(this._server, this._apollo);
+  }
 
-export const startServer = async () => {
-  await server.start();
-  logger.info(`🤖 Hapi server running at ${server.info.uri}`);
-  return server;
-};
+  private async routerConfig() {
+    registerRoutes(this._server);
+  }
 
-export const initDb = async () => {
-  server.listener.on('ready', startServer);
-  connectDb(server);
-  return server;
-};
+  public get server(): Server {
+    return this._server;
+  }
+
+  public async initialize(): Promise<void> {
+    await this.config();
+    await this.routerConfig();
+    await this._server.initialize();
+  }
+
+  public async start(): Promise<void> {
+    if (this._started) return Promise.resolve();
+    await this._server.start();
+    logger.info(`🤖 Hapi server running at ${this._server.info.uri}`);
+  }
+
+  public startDB(): Promise<void> {
+    if (this._started) return Promise.resolve();
+    this._server.listener.on(events.SERVER_READY, this.start.bind(this));
+    return connectDb(this._server);
+  }
+}

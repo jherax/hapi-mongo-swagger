@@ -1,18 +1,23 @@
+import '../../__mocks__/apollo';
+
 import type {Server} from '@hapi/hapi';
 import {agent as request} from 'supertest';
 
 import * as dbMock from '../../__mocks__/mongo.db';
 import Painting from '../../models/Painting';
-import {initServer} from '../../server';
+import {NodeServer} from '../../server';
 import initApollo from '../../server/apollo';
 import messages from '../../server/messages';
 
-let server: Server;
-const v1 = '/api/v1';
+const PRODUCTS_PATH = `/api/v1/paintings`;
 const {SUCCESSFUL_ADDED, INCOMPLETE_REQUEST, INTERNAL_SERVER_ERROR} = messages;
 
-describe(`E2E: Testing POST "${v1}/paintings" routes`, () => {
+describe(`E2E: Testing POST "${PRODUCTS_PATH}" routes`, () => {
+  jest.spyOn(NodeServer.prototype, 'start').mockImplementation(jest.fn());
   const PaintingSave = jest.spyOn(Painting.prototype, 'save');
+  let appInstance: NodeServer;
+  let server: Server;
+
   const PAYLOAD: IPainting = {
     name: 'Mona Lisa',
     year: '1503-1517',
@@ -22,8 +27,10 @@ describe(`E2E: Testing POST "${v1}/paintings" routes`, () => {
 
   beforeAll(async () => {
     await dbMock.setUp();
-    const apolloServer = await initApollo();
-    server = await initServer(apolloServer);
+    const apollo = await initApollo();
+    appInstance = new NodeServer(apollo);
+    await appInstance.initialize();
+    server = appInstance.server;
   });
 
   afterEach(async () => {
@@ -38,7 +45,7 @@ describe(`E2E: Testing POST "${v1}/paintings" routes`, () => {
 
   it(`should respond with the Painting entity created`, async () => {
     const reply = await request(server.listener)
-      .post(`${v1}/paintings`)
+      .post(PRODUCTS_PATH)
       .send(PAYLOAD);
     const outData: IPainting = reply.body.data;
 
@@ -51,9 +58,7 @@ describe(`E2E: Testing POST "${v1}/paintings" routes`, () => {
   });
 
   it(`should return a 422 error when the body parameters are not valid`, async () => {
-    const reply = await request(server.listener)
-      .post(`${v1}/paintings`)
-      .send({});
+    const reply = await request(server.listener).post(PRODUCTS_PATH).send({});
     const response: ServerResponse = reply.body;
     const error = response.error;
 
@@ -68,7 +73,7 @@ describe(`E2E: Testing POST "${v1}/paintings" routes`, () => {
     PaintingSave.mockRejectedValue(new Error('Database error'));
 
     const reply = await request(server.listener)
-      .post(`${v1}/paintings`)
+      .post(PRODUCTS_PATH)
       .send(PAYLOAD);
     const response: ServerResponse = reply.body;
 

@@ -1,21 +1,27 @@
+import '../../__mocks__/apollo';
+
 import type {Server} from '@hapi/hapi';
 import {agent as request} from 'supertest';
 
 import HealthCheck from '../../models/HealthCheck';
-import {initServer} from '../../server';
+import {NodeServer} from '../../server';
 import initApollo from '../../server/apollo';
 import messages from '../../server/messages';
 
-let server: Server;
 const {SERVICE_UNAVAILABLE, INTERNAL_SERVER_ERROR, TOO_MANY_REQUESTS} =
   messages;
 
 describe('E2E: Testing GET "/healthcheck"', () => {
+  jest.spyOn(NodeServer.prototype, 'start').mockImplementation(jest.fn());
   const findOneAndUpdateSpy = jest.spyOn(HealthCheck, 'findOneAndUpdate');
+  let appInstance: NodeServer;
+  let server: Server;
 
   beforeAll(async () => {
-    const apolloServer = await initApollo();
-    server = await initServer(apolloServer);
+    const apollo = await initApollo();
+    appInstance = new NodeServer(apollo);
+    await appInstance.initialize();
+    server = appInstance.server;
   });
 
   afterEach(() => {

@@ -5,7 +5,7 @@ import {agent as request} from 'supertest';
 
 import paintingsMock from '../../__mocks__/paintings.json';
 import Painting from '../../models/Painting';
-import {initServer} from '../../server';
+import {NodeServer} from '../../server';
 import initApollo from '../../server/apollo';
 import graphQLErrors from '../../utils/graphQLErrors';
 import verifyJwt from '../../utils/verifyJwt';
@@ -14,11 +14,14 @@ import {type PaintingResponse} from '../resolvers';
 jest.mock('../../utils/verifyJwt');
 
 const verifyJwtMock = verifyJwt as jest.MockedFunction<typeof verifyJwt>;
+let appInstance: NodeServer;
 let server: Server;
 
 beforeAll(async () => {
-  const apolloServer = await initApollo();
-  server = await initServer(apolloServer);
+  const apollo = await initApollo();
+  appInstance = new NodeServer(apollo);
+  await appInstance.initialize();
+  server = appInstance.server;
 });
 
 beforeEach(() => {

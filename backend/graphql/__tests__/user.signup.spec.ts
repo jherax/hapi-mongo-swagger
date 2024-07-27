@@ -5,18 +5,21 @@ import {agent as request} from 'supertest';
 
 import usersMock from '../../__mocks__/users.json';
 import User from '../../models/User';
-import {initServer} from '../../server';
+import {NodeServer} from '../../server';
 import initApollo from '../../server/apollo';
 import createToken from '../../utils/createToken';
 import filterProps from '../../utils/filterProps';
 import {type UserResponse} from '../resolvers';
 
-let server: Server;
 const expectedUser: IUser = usersMock[0];
+let appInstance: NodeServer;
+let server: Server;
 
 beforeAll(async () => {
-  const apolloServer = await initApollo();
-  server = await initServer(apolloServer);
+  const apollo = await initApollo();
+  appInstance = new NodeServer(apollo);
+  await appInstance.initialize();
+  server = appInstance.server;
 });
 
 beforeEach(() => {
