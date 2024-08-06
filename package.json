@@ -20,6 +20,7 @@
     "release": "standard-version",
     "mongod": "node scripts/start-mongod.js",
     "clean": "rimraf dist",
+    "secret": "node scripts/create-secret.js",
     "build": "tsc -p config/tsconfig.build.json",
     "build-prd": "NODE_ENV=prod node config/esbuild.js",
     "build-all": "run-s clean build-prd",
